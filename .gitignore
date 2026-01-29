@@ -1,0 +1,21 @@
+# Nix
+result
+result-*
+*.qcow2
+
+# Direnv
+.direnv/
+.envrc
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*~
+*.swo
+
+# MacOS
+.DS_Store
+
+# Temporary files
+tmp/
