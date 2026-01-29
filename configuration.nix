@@ -1,7 +1,6 @@
 {
   modulesPath,
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -13,8 +12,18 @@
     ./host
   ];
 
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "uhci_hcd"
+    "virtio_pci"
+    "virtio_scsi"
+    "sd_mod"
+    "sr_mod"
+  ];
+  boot.kernelModules = [ "kvm-intel" ];
+
   boot.loader.grub = {
-    device = "nodev";
+    device = "/dev/sda"; # Required for legacy BIOS boot on GPT
     enable = true;
     efiSupport = true;
     efiInstallAsRemovable = true;
@@ -27,7 +36,17 @@
   };
 
   networking.hostName = "ratmachine";
-  networking.useDHCP = lib.mkDefault true;
+
+  # Use systemd-networkd for better reliability on VPS
+  networking.useDHCP = true;
+  # systemd.network.enable = true;
+  # networking.useNetworkd = true;
+
+  # # Helper to configure all interfaces to use DHCP via networkd
+  # systemd.network.networks."10-wan" = {
+  #   matchConfig.Name = "ens3";
+  #   networkConfig.DHCP = "yes";
+  # };
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyC3ClITt+UIgaILLBg7cUFmFx61LyRWXjmVvsiVxWslYvmUdMtvkSPR46rJ/Ma9Yey2UabasvamQn2X+tKWOw0xC2WYxyfbN807AoXGjQ+l4DHjXK39gIhMOcFZLgvWFFz0s05yA7iiLqa1eC4JxggeVN0y7TLF3dGjZMs+5W3vhimy2y/oRL4TzJ1MMtcGc3RBo0YCYaczzVz42sd8mgbaVGf/5gXSGlXHptgLOVUYuEcistfqBzVQTns/wtlEngefqn/roAEuu+DUAUg1mSUG/vxEbZSkdOOp8DaltZEQoxWAPNWOlo5JuO+6hjOa60W0ZisSsYdXJPL83KzfMSW9DYUaW+vBHPO521NpFn36G8J8MB9otQq0LlqSdh7S6Oias/QuiFC6rgronDo7+J8+MJHb4uQ/F4xJ23//A0jG16aS+53OLoS4GBzIelKmNprxjAiDwyQbWrqL1vvBExgElZMgQsTf1ocvVAAZENizfZLaMVxpIHhW7kfjm1G6U= urio@Mac.lan"
