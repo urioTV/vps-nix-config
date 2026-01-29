@@ -1,0 +1,8 @@
+{ ... }:
+
+{
+  imports = [
+    ./kubernetes
+    ./tailscale
+  ];
+}

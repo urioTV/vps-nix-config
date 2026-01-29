@@ -7,6 +7,8 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -15,14 +17,16 @@
       nixpkgs,
       disko,
       home-manager,
+      sops-nix,
       ...
-    }@inputs:
+    }:
     {
       nixosConfigurations.ratmachine = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
+          sops-nix.nixosModules.sops
           {
             home-manager.users.urio = {
               imports = [ ./home.nix ];

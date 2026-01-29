@@ -1,0 +1,16 @@
+# sops-nix configuration
+# Po pierwszym deploy zaktualizuj klucz serwera:
+#   ssh root@<VPS_IP> "cat /etc/ssh/ssh_host_ed25519_key.pub" | ssh-to-age
+
+keys:
+  # Klucz hosta VPS (ssh-to-age z /etc/ssh/ssh_host_ed25519_key.pub)
+  # TODO: Zaktualizuj po pierwszym deploy
+  - &server_ratmachine age1kxtw4c7jlktx7p653lmvazkhyaq8gra8ftk7tjtc9tln9qaxy4sskjnh88
+  - &local_user age1ru42q2zrya053ntkv0z5m0la7udssjnzuqtplx0qqs9pl2dcs9es5kdpxg
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+        - *server_ratmachine
+        - *local_user
