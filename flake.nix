@@ -18,7 +18,7 @@
       ...
     }@inputs:
     {
-      nixosConfigurations.vps = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.ratmachine = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           disko.nixosModules.disko
@@ -31,6 +31,7 @@
           }
           ./nix-settings.nix
           ./configuration.nix
+          ./hardware-configuration.nix
         ];
       };
     };

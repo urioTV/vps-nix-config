@@ -26,7 +26,7 @@
     settings.PermitRootLogin = "yes";
   };
 
-  networking.hostName = "vps";
+  networking.hostName = "ratmachine";
   networking.useDHCP = lib.mkDefault true;
 
   users.users.root.openssh.authorizedKeys.keys = [
