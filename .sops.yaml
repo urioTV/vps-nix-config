@@ -9,7 +9,7 @@ keys:
   - &local_user age1ru42q2zrya053ntkv0z5m0la7udssjnzuqtplx0qqs9pl2dcs9es5kdpxg
 
 creation_rules:
-  - path_regex: (secrets/.*\.yaml|kubernetes/.*/secrets\.enc\.yaml)$
+  - path_regex: (secrets/.*\.yaml|kubernetes/.*/secrets\.enc\.yaml|terraform/.*\.enc|terraform/.*\.sops.*|terraform/.*\.tfvars)$
     key_groups:
       - age:
           - *server_ratmachine
