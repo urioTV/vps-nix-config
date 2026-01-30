@@ -15,8 +15,9 @@ if [ -z "$VPS_IP" ]; then
   exit 1
 fi
 
-echo "Updating $VPS_IP as root..."
+echo "Updating $VPS_IP as root (building on remote)..."
 nixos-rebuild switch \
   --flake .#ratmachine \
-  --target-host root@$VPS_IP
+  --target-host root@$VPS_IP \
+  --build-host root@$VPS_IP
 

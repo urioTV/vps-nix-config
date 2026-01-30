@@ -16,8 +16,9 @@ if [ -z "$VPS_IP" ]; then
   exit 1
 fi
 
-echo "Deploying to $VPS_IP as ${VPS_USER}..."
+echo "Deploying to $VPS_IP as ${VPS_USER} (building on remote)..."
 nix run github:nix-community/nixos-anywhere -- \
+  --build-on-remote \
   --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
   --flake .#ratmachine \
   ${VPS_USER}@$VPS_IP
