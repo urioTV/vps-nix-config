@@ -20,6 +20,14 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Determinate Nix - do NOT use nixpkgs.follows for cache hits
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -36,6 +44,7 @@
         nixosConfigurations.ratmachine = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
+            determinate.nixosModules.default
             disko.nixosModules.disko
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
@@ -50,6 +59,21 @@
             ./hardware-configuration.nix
           ];
         };
+
+        # deploy-rs configuration
+        deploy.nodes.ratmachine = {
+          hostname = "ratmachine"; # Will be overridden by --hostname flag
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.ratmachine;
+          };
+        };
+
+        # Deployment checks
+        checks = builtins.mapAttrs (
+          system: deployLib: deployLib.deployChecks inputs.self.deploy
+        ) deploy-rs.lib;
       };
 
       perSystem =
