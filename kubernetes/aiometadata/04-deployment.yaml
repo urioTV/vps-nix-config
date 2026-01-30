@@ -29,6 +29,7 @@ spec:
           image: ghcr.io/cedya77/aiometadata:latest
           ports:
             - containerPort: 3232
+              hostPort: 3232
           envFrom:
             - configMapRef:
                 name: aiometadata-env
