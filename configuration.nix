@@ -21,6 +21,7 @@
     "sr_mod"
   ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelPackages = pkgs.linuxPackages_xanmod;
 
   boot.loader.grub = {
     device = "/dev/sda"; # Required for legacy BIOS boot on GPT

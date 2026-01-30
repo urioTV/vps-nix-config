@@ -5,6 +5,7 @@
     role = "server";
     extraFlags = toString [
       # "--disable=traefik" # Wyłącz wbudowany traefik (opcjonalne)
+      "--disable=local-storage" # Wyłącz wbudowany local-path
       "--tls-san=${config.networking.hostName}"
     ];
   };

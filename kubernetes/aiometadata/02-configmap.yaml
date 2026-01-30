@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aiometadata-env
+  namespace: aiometadata
+data:
+  REDIS_URL: "redis://aiometadata-redis:6379"

@@ -9,8 +9,8 @@ keys:
   - &local_user age1ru42q2zrya053ntkv0z5m0la7udssjnzuqtplx0qqs9pl2dcs9es5kdpxg
 
 creation_rules:
-  - path_regex: secrets/.*\.yaml$
+  - path_regex: (secrets/.*\.yaml|kubernetes/.*/secrets\.enc\.yaml)$
     key_groups:
       - age:
-        - *server_ratmachine
-        - *local_user
+          - *server_ratmachine
+          - *local_user

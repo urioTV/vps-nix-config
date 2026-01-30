@@ -25,3 +25,15 @@ tmp/
 secrets/*.dec.yaml
 secrets/*.decrypted.yaml
 
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
+# Encrypted/Decrypted Secret leftovers
+secret.tmp.yaml
+kubeconfig
