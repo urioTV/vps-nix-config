@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aiostreams-env
+  namespace: aiostreams
+data:
+  BASE_URL: "https://aiostreams.urio.dev"

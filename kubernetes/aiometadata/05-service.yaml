@@ -4,8 +4,7 @@ metadata:
   name: aiometadata
   namespace: aiometadata
 spec:
-  type: LoadBalancer
-  loadBalancerIP: ${SERVICE_IP}
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: 3232
