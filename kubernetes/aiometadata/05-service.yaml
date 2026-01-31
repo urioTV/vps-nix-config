@@ -5,8 +5,9 @@ metadata:
   namespace: aiometadata
 spec:
   type: ClusterIP
+  clusterIP: 10.43.200.200
   ports:
-    - port: 3232
+    - port: 80
       targetPort: 3232
       name: http
   selector:

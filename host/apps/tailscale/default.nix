@@ -9,6 +9,9 @@
       "--accept-routes"
       "--advertise-exit-node"
     ];
+    extraSetFlags = [
+      "--advertise-routes=10.43.0.0/16"
+    ];
   };
 
   # IP forwarding dla kubernetes
@@ -18,5 +21,8 @@
   };
 
   # Firewall trust dla tailscale
-  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  networking.firewall = {
+    trustedInterfaces = [ "tailscale0" ];
+    checkReversePath = "loose";
+  };
 }
