@@ -10,11 +10,25 @@
     ];
   };
 
+  services.openiscsi = {
+    enable = true;
+    name = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}";
+  };
+
   # Kubectl i helm w środowisku
   environment.systemPackages = with pkgs; [
     kubectl
     kubernetes-helm
     k3s
+    openiscsi
+    nfs-utils
+    util-linux
+    cryptsetup
+  ];
+
+  # Longhorn oczekuje binarek w standardowych ścieżkach, których NixOS nie używa domyślnie.
+  systemd.tmpfiles.rules = [
+    "L+ /usr/local/bin/iscsiadm - - - - ${pkgs.openiscsi}/bin/iscsiadm"
   ];
 
   # Port 6443 nie musi być otwierany globalnie
