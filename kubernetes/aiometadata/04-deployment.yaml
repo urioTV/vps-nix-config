@@ -39,4 +39,4 @@ spec:
       volumes:
         - name: aiometadata-data
           persistentVolumeClaim:
-            claimName: aiometadata-pvc
+            claimName: aiometadata-pvc-longhorn

@@ -30,4 +30,4 @@ spec:
       volumes:
         - name: jackett-config
           persistentVolumeClaim:
-            claimName: jackett-pvc
+            claimName: jackett-pvc-longhorn
