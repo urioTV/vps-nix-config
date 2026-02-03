@@ -1,0 +1,6 @@
+name: vps-infra
+runtime:
+  name: nodejs
+  options:
+    typescript: true
+description: VPS Infrastructure - Cloudflare Tunnel, Zero Trust, and Kubernetes resources

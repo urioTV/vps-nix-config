@@ -37,3 +37,11 @@ secrets/*.decrypted.yaml
 # Encrypted/Decrypted Secret leftovers
 secret.tmp.yaml
 kubeconfig
+
+# Pulumi
+pulumi/node_modules/
+pulumi/bin/
+pulumi/*.log
+
+# Backups
+backups/

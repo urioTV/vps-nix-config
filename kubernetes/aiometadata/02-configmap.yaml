@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aiometadata-env
-  namespace: aiometadata
-data:
-  REDIS_URL: "redis://aiometadata-redis:6379"
-  HOST_NAME: "http://aiometadata:3232/"
-  DATABASE_URI: "sqlite:///app/addon/data/database.sqlite"

@@ -87,10 +87,25 @@
             name = "vps-nix-config";
 
             packages = with pkgs; [
+              # Secrets management
               sops
               age
               ssh-to-age
+
+              # NixOS deployment
               nixos-rebuild
+
+              # Pulumi IaC
+              pulumi
+              pulumiPackages.pulumi-nodejs
+              nodejs_22
+              nodePackages.typescript
+
+              # Kubernetes
+              kubectl
+
+              # Terraform (for migration)
+              opentofu
             ];
 
             shellHook = ''
@@ -98,11 +113,15 @@
               echo "🚀 VPS NixOS Config Development Shell"
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
               echo ""
-              echo "Available commands:"
+              echo "NixOS Commands:"
               echo "  ./deploy.sh  - Deploy fresh NixOS install to VPS"
               echo "  ./update.sh  - Update existing NixOS configuration"
               echo ""
-              echo "Tools available: sops, age, ssh-to-age, nixos-rebuild"
+              echo "Pulumi Commands:"
+              echo "  cd pulumi && pulumi up      - Deploy infrastructure"
+              echo "  cd pulumi && pulumi preview - Preview changes"
+              echo ""
+              echo "Tools: sops, age, pulumi, kubectl, nodejs"
               echo ""
             '';
           };
