@@ -1,4 +1,5 @@
 import * as k8s from "@pulumi/kubernetes";
+import * as images from "../image-versions-manifest.json";
 
 export interface MinioConfig {
     namespace: k8s.core.v1.Namespace;
@@ -81,7 +82,7 @@ export function deployMinio(config: MinioConfig, provider: k8s.Provider) {
                         containers: [
                             {
                                 name: "minio",
-                                image: "minio/minio:latest",
+                                image: `${images.minio.image}:${images.minio.tag}`,
                                 args: ["server", "/data", "--console-address", ":9001"],
                                 ports: [
                                     { containerPort: 9000, name: "api" },

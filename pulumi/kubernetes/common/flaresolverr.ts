@@ -1,4 +1,5 @@
 import * as k8s from "@pulumi/kubernetes";
+import * as images from "../../image-versions-manifest.json";
 
 export interface FlaresolverrConfig {
     namespace: k8s.core.v1.Namespace;
@@ -29,7 +30,7 @@ export function deployFlaresolverr(
                         containers: [
                             {
                                 name: "flaresolverr",
-                                image: "ghcr.io/flaresolverr/flaresolverr:latest",
+                                image: `${images.flaresolverr.image}:${images.flaresolverr.tag}`,
                                 ports: [{ containerPort: 8191 }],
                                 env: [
                                     { name: "LOG_LEVEL", value: "info" },

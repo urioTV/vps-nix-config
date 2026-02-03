@@ -1,0 +1,30 @@
+{
+    "aiostreams": {
+        "image": "ghcr.io/viren070/aiostreams",
+        "tag": "latest"
+    },
+    "aiometadata": {
+        "image": "ghcr.io/cedya77/aiometadata",
+        "tag": "latest"
+    },
+    "redis": {
+        "image": "redis",
+        "tag": "7-alpine"
+    },
+    "jackett": {
+        "image": "lscr.io/linuxserver/jackett",
+        "tag": "latest"
+    },
+    "flaresolverr": {
+        "image": "ghcr.io/flaresolverr/flaresolverr",
+        "tag": "latest"
+    },
+    "minio": {
+        "image": "minio/minio",
+        "tag": "latest"
+    },
+    "cloudflared": {
+        "image": "cloudflare/cloudflared",
+        "tag": "latest"
+    }
+}

@@ -2,6 +2,7 @@ import * as k8s from "@pulumi/kubernetes";
 import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
+import * as images from "../../image-versions-manifest.json";
 
 // INTEGRATION: Ensure secrets exist before deployment
 // This runs at import time, ensuring secrets.yaml is populated before index.ts calls loadSecrets()
@@ -88,7 +89,7 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
                         containers: [
                             {
                                 name: "jackett",
-                                image: "lscr.io/linuxserver/jackett:latest",
+                                image: `${images.jackett.image}:${images.jackett.tag}`,
                                 ports: [{ containerPort: 9117 }],
                                 env: [
                                     { name: "PUID", value: "1000" },

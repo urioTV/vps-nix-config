@@ -1,4 +1,5 @@
 import * as k8s from "@pulumi/kubernetes";
+import * as images from "../../image-versions-manifest.json";
 import * as pulumi from "@pulumi/pulumi";
 
 export interface AiometadataConfig {
@@ -72,7 +73,7 @@ export function deployAiometadata(
                         containers: [
                             {
                                 name: "redis",
-                                image: "redis:7-alpine",
+                                image: `${images.redis.image}:${images.redis.tag}`,
                                 ports: [{ containerPort: 6379 }],
                             },
                         ],
@@ -115,7 +116,7 @@ export function deployAiometadata(
                         containers: [
                             {
                                 name: "aiometadata",
-                                image: "ghcr.io/cedya77/aiometadata:latest",
+                                image: `${images.aiometadata.image}:${images.aiometadata.tag}`,
                                 ports: [{ containerPort: 3232 }],
                                 envFrom: [{ configMapRef: { name: "aiometadata-env" } }],
                                 volumeMounts: [

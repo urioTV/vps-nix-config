@@ -1,5 +1,6 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
+import * as images from "../../image-versions-manifest.json";
 
 export interface AiostreamsConfig {
     namespace: k8s.core.v1.Namespace;
@@ -96,7 +97,7 @@ export function deployAiostreams(
                         containers: [
                             {
                                 name: "aiostreams",
-                                image: "ghcr.io/viren070/aiostreams:latest",
+                                image: `${images.aiostreams.image}:${images.aiostreams.tag}`,
                                 ports: [{ containerPort: 3000 }],
                                 envFrom: [
                                     { secretRef: { name: "aiostreams-env" } },
@@ -166,7 +167,7 @@ export function deployAiostreams(
                         containers: [
                             {
                                 name: "cloudflared",
-                                image: "cloudflare/cloudflared:latest",
+                                image: `${images.cloudflared.image}:${images.cloudflared.tag}`,
                                 args: ["tunnel", "--no-autoupdate", "run"],
                                 env: [
                                     {
