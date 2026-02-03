@@ -88,6 +88,10 @@ export function deployAiostreams(
                                 ip: "10.43.200.200",
                                 hostnames: ["aiometadata"],
                             },
+                            {
+                                ip: "10.43.200.201",
+                                hostnames: ["jackett"],
+                            },
                         ],
                         containers: [
                             {

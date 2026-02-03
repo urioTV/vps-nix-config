@@ -1,7 +1,24 @@
 import * as k8s from "@pulumi/kubernetes";
+import * as fs from "fs";
+import * as path from "path";
+import { execSync } from "child_process";
+
+// INTEGRATION: Ensure secrets exist before deployment
+// This runs at import time, ensuring secrets.yaml is populated before index.ts calls loadSecrets()
+try {
+    const ensureScript = path.join(__dirname, "ensure-secrets.sh");
+    if (fs.existsSync(ensureScript)) {
+        console.log("🔑 Running ensure-secrets.sh from jackett.ts...");
+        execSync(ensureScript, { stdio: "inherit" });
+    }
+} catch (e) {
+    console.error("⚠️ Failed to run ensure-secrets.sh:", e);
+    // process.exit(1); // Optional: fail hard if secrets are critical
+}
 
 export interface JackettConfig {
     namespace: k8s.core.v1.Namespace;
+    apiKey: string;
 }
 
 /**
@@ -9,6 +26,25 @@ export interface JackettConfig {
  */
 export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
     const ns = config.namespace.metadata.name;
+
+    // Load init script from external file
+    const scriptPath = path.join(__dirname, "scripts/99-force-api-key.sh");
+    const scriptContent = fs.readFileSync(scriptPath, "utf-8");
+
+    // ConfigMap for init script to enforce API Key
+    const initScriptConfig = new k8s.core.v1.ConfigMap(
+        "jackett-init-script",
+        {
+            metadata: {
+                name: "jackett-init-script",
+                namespace: ns,
+            },
+            data: {
+                "99-force-api-key.sh": scriptContent,
+            },
+        },
+        { provider, dependsOn: [config.namespace] }
+    );
 
     // PVC for config
     const pvc = new k8s.core.v1.PersistentVolumeClaim(
@@ -43,6 +79,12 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
                 template: {
                     metadata: { labels: { app: "jackett" } },
                     spec: {
+                        hostAliases: [
+                            {
+                                ip: "10.43.200.202",
+                                hostnames: ["flaresolverr"],
+                            },
+                        ],
                         containers: [
                             {
                                 name: "jackett",
@@ -52,9 +94,15 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
                                     { name: "PUID", value: "1000" },
                                     { name: "PGID", value: "1000" },
                                     { name: "TZ", value: "Europe/Warsaw" },
+                                    { name: "JACKETT_API_KEY", value: config.apiKey },
                                 ],
                                 volumeMounts: [
                                     { name: "config", mountPath: "/config" },
+                                    {
+                                        name: "init-script",
+                                        mountPath: "/custom-cont-init.d/99-force-api-key.sh",
+                                        subPath: "99-force-api-key.sh",
+                                    },
                                 ],
                             },
                         ],
@@ -63,12 +111,19 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
                                 name: "config",
                                 persistentVolumeClaim: { claimName: "jackett-config" },
                             },
+                            {
+                                name: "init-script",
+                                configMap: {
+                                    name: "jackett-init-script",
+                                    defaultMode: 0o755,
+                                },
+                            },
                         ],
                     },
                 },
             },
         },
-        { provider, dependsOn: [config.namespace] }
+        { provider, dependsOn: [config.namespace, initScriptConfig] }
     );
 
     // Service

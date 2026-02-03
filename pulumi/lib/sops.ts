@@ -26,6 +26,9 @@ export interface SecretsConfig {
     // MinIO
     minio_root_user: string;
     minio_root_password: string;
+
+    // Jackett
+    jackett_api_key: string;
 }
 
 /**

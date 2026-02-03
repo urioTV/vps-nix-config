@@ -99,7 +99,10 @@ deployAiostreams(
 
 // Deploy Jackett
 deployJackett(
-    { namespace: namespaces.jackett },
+    {
+        namespace: namespaces.jackett,
+        apiKey: secrets.jackett_api_key,
+    },
     k8sProvider
 );
 

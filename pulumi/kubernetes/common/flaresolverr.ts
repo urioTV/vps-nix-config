@@ -54,7 +54,9 @@ export function deployFlaresolverr(
             },
             spec: {
                 selector: { app: "flaresolverr" },
-                ports: [{ port: 8191, targetPort: 8191 }],
+                type: "ClusterIP",
+                clusterIP: "10.43.200.202",
+                ports: [{ port: 80, targetPort: 8191 }],
             },
         },
         { provider, dependsOn: [deployment] }
