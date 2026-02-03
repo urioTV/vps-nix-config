@@ -100,6 +100,7 @@
               pulumiPackages.pulumi-nodejs
               nodejs_22
               nodePackages.typescript
+              bun
 
               # Kubernetes
               kubectl
@@ -121,7 +122,7 @@
               echo "  cd pulumi && pulumi up      - Deploy infrastructure"
               echo "  cd pulumi && pulumi preview - Preview changes"
               echo ""
-              echo "Tools: sops, age, pulumi, kubectl, nodejs"
+              echo "Tools: sops, age, pulumi, kubectl, nodejs, bun"
               echo ""
             '';
           };

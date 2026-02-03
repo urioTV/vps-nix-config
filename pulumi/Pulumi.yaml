@@ -3,4 +3,5 @@ runtime:
   name: nodejs
   options:
     typescript: true
+    packagemanager: bun
 description: VPS Infrastructure - Cloudflare Tunnel, Zero Trust, and Kubernetes resources
