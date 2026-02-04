@@ -96,7 +96,7 @@
               nixos-rebuild
 
               # Pulumi IaC
-              pulumi
+              pulumi-bin
               pulumiPackages.pulumi-nodejs
               nodejs_22
               nodePackages.typescript
