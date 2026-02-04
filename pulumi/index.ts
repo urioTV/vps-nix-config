@@ -9,7 +9,7 @@ import {
     deployAiometadata,
     deployAiostreams,
     deployJackett,
-    deployFlaresolverr,
+    deployByparr,
     deployMinio,
 } from "./kubernetes";
 
@@ -106,9 +106,9 @@ deployJackett(
     k8sProvider
 );
 
-// Deploy FlareSolverr
-deployFlaresolverr(
-    { namespace: namespaces.flaresolverr },
+// Deploy Byparr (modern FlareSolverr alternative)
+deployByparr(
+    { namespace: namespaces.byparr },
     k8sProvider
 );
 

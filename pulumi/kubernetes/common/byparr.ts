@@ -2,40 +2,42 @@ import * as k8s from "@pulumi/kubernetes";
 import * as images from "../../image-versions-manifest.json";
 import { getServiceIP } from "../networking";
 
-export interface FlaresolverrConfig {
+export interface ByparrConfig {
     namespace: k8s.core.v1.Namespace;
 }
 
 /**
- * Deploy FlareSolverr for Cloudflare bypass
+ * Deploy Byparr for Cloudflare bypass
+ * Modern FlareSolverr alternative using camoufox and FastAPI
+ * https://github.com/ThePhaseless/Byparr
  */
-export function deployFlaresolverr(
-    config: FlaresolverrConfig,
+export function deployByparr(
+    config: ByparrConfig,
     provider: k8s.Provider
 ) {
     const ns = config.namespace.metadata.name;
 
     // Deployment
     const deployment = new k8s.apps.v1.Deployment(
-        "flaresolverr",
+        "byparr",
         {
             metadata: {
-                name: "flaresolverr",
+                name: "byparr",
                 namespace: ns,
             },
             spec: {
-                selector: { matchLabels: { app: "flaresolverr" } },
+                selector: { matchLabels: { app: "byparr" } },
                 template: {
-                    metadata: { labels: { app: "flaresolverr" } },
+                    metadata: { labels: { app: "byparr" } },
                     spec: {
                         containers: [
                             {
-                                name: "flaresolverr",
-                                image: `${images.flaresolverr.image}:${images.flaresolverr.tag}`,
+                                name: "byparr",
+                                image: `${images.byparr.image}:${images.byparr.tag}`,
                                 ports: [{ containerPort: 8191 }],
                                 env: [
-                                    { name: "LOG_LEVEL", value: "info" },
-                                    { name: "TZ", value: "Europe/Warsaw" },
+                                    { name: "HOST", value: "0.0.0.0" },
+                                    { name: "PORT", value: "8191" },
                                 ],
                             },
                         ],
@@ -48,16 +50,16 @@ export function deployFlaresolverr(
 
     // Service
     const service = new k8s.core.v1.Service(
-        "flaresolverr",
+        "byparr",
         {
             metadata: {
-                name: "flaresolverr",
+                name: "byparr",
                 namespace: ns,
             },
             spec: {
-                selector: { app: "flaresolverr" },
+                selector: { app: "byparr" },
                 type: "ClusterIP",
-                clusterIP: getServiceIP("flaresolverr"),
+                clusterIP: getServiceIP("byparr"),
                 ports: [{ port: 80, targetPort: 8191 }],
             },
         },

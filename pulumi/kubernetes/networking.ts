@@ -7,7 +7,7 @@
 export const serviceIPs = {
     aiometadata: "10.43.200.200",
     jackett: "10.43.200.201",
-    flaresolverr: "10.43.200.202",
+    byparr: "10.43.200.202",
     // Add new services here as needed
 } as const;
 

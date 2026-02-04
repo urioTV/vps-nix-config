@@ -15,9 +15,9 @@
         "image": "linuxserver/jackett",
         "tag": "0.24.1027"
     },
-    "flaresolverr": {
-        "image": "ghcr.io/flaresolverr/flaresolverr",
-        "tag": "v3.4.6"
+    "byparr": {
+        "image": "ghcr.io/thephaseless/byparr",
+        "tag": "0d1ba8dff1dd2db733c3762d07254b4b07847f5e-amd64"
     },
     "minio": {
         "image": "minio/minio",

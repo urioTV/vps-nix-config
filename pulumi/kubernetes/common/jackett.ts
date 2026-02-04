@@ -81,7 +81,7 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
                 template: {
                     metadata: { labels: { app: "jackett" } },
                     spec: {
-                        hostAliases: getHostAliases(["flaresolverr"]),
+                        hostAliases: getHostAliases(["byparr"]),
                         containers: [
                             {
                                 name: "jackett",

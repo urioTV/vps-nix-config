@@ -8,7 +8,7 @@ export function createNamespaces(provider: k8s.Provider) {
         "aiometadata",
         "aiostreams",
         "jackett",
-        "flaresolverr",
+        "byparr",
         "minio",
     ];
 
