@@ -1,6 +1,7 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as images from "../../image-versions-manifest.json";
 import * as pulumi from "@pulumi/pulumi";
+import { getServiceIP } from "../networking";
 
 export interface AiometadataConfig {
     namespace: k8s.core.v1.Namespace;
@@ -148,7 +149,7 @@ export function deployAiometadata(
             spec: {
                 selector: { app: "aiometadata" },
                 type: "ClusterIP",
-                clusterIP: "10.43.200.200",
+                clusterIP: getServiceIP("aiometadata"),
                 ports: [{ name: "http", port: 3232, targetPort: 3232 }],
             },
         },

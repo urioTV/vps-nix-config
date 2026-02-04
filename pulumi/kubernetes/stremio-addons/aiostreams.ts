@@ -1,6 +1,7 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
 import * as images from "../../image-versions-manifest.json";
+import { getHostAliases } from "../networking";
 
 export interface AiostreamsConfig {
     namespace: k8s.core.v1.Namespace;
@@ -84,16 +85,7 @@ export function deployAiostreams(
                 template: {
                     metadata: { labels: { app: "aiostreams" } },
                     spec: {
-                        hostAliases: [
-                            {
-                                ip: "10.43.200.200",
-                                hostnames: ["aiometadata"],
-                            },
-                            {
-                                ip: "10.43.200.201",
-                                hostnames: ["jackett"],
-                            },
-                        ],
+                        hostAliases: getHostAliases(["aiometadata", "jackett"]),
                         containers: [
                             {
                                 name: "aiostreams",

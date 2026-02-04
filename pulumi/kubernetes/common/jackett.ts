@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
 import * as images from "../../image-versions-manifest.json";
+import { getHostAliases, getServiceIP } from "../networking";
 
 // INTEGRATION: Ensure secrets exist before deployment
 // This runs at import time, ensuring secrets.yaml is populated before index.ts calls loadSecrets()
@@ -80,12 +81,7 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
                 template: {
                     metadata: { labels: { app: "jackett" } },
                     spec: {
-                        hostAliases: [
-                            {
-                                ip: "10.43.200.202",
-                                hostnames: ["flaresolverr"],
-                            },
-                        ],
+                        hostAliases: getHostAliases(["flaresolverr"]),
                         containers: [
                             {
                                 name: "jackett",
@@ -138,7 +134,7 @@ export function deployJackett(config: JackettConfig, provider: k8s.Provider) {
             spec: {
                 selector: { app: "jackett" },
                 type: "ClusterIP",
-                clusterIP: "10.43.200.201",
+                clusterIP: getServiceIP("jackett"),
                 ports: [{ name: "http", port: 80, targetPort: 9117 }],
             },
         },

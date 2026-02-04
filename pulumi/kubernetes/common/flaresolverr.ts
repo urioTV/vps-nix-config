@@ -1,5 +1,6 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as images from "../../image-versions-manifest.json";
+import { getServiceIP } from "../networking";
 
 export interface FlaresolverrConfig {
     namespace: k8s.core.v1.Namespace;
@@ -56,7 +57,7 @@ export function deployFlaresolverr(
             spec: {
                 selector: { app: "flaresolverr" },
                 type: "ClusterIP",
-                clusterIP: "10.43.200.202",
+                clusterIP: getServiceIP("flaresolverr"),
                 ports: [{ port: 80, targetPort: 8191 }],
             },
         },
