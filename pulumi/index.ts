@@ -11,6 +11,7 @@ import {
     deployJackett,
     deployByparr,
     deployMinio,
+    deployCalico,
 } from "./kubernetes";
 
 // ============================================================================
@@ -66,6 +67,9 @@ createZeroTrust({
 
 // NOTE: Longhorn already installed via existing Helm release, skipping Pulumi management
 // const longhorn = deployLonghorn(k8sProvider);
+
+// Deploy Calico CNI
+deployCalico(k8sProvider);
 
 // Create namespaces
 const namespaces = createNamespaces(k8sProvider);

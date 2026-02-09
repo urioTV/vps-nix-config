@@ -5,3 +5,4 @@ export { deployJackett, JackettConfig } from "./common/jackett";
 export { deployByparr, ByparrConfig } from "./common/byparr";
 export { deployMinio, MinioConfig } from "./minio";
 export { deployLonghorn } from "./longhorn";
+export { deployCalico } from "./cni/calico";
