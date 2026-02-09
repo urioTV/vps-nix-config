@@ -60,16 +60,20 @@
     ]; # Ufaj interfejsom Calico i Tailscale
 
     allowedTCPPorts = [
-      179 # BGP (Calico) - kluczowe dla routingu
+      # 179 # BGP (Calico) - kluczowe dla routingu
       # 80, 443 - Twoje Ingressy
     ];
     allowedUDPPorts = [
-      4789 # VXLAN (jeśli Calico użyje trybu VXLAN)
+      # 4789 # VXLAN (jeśli Calico użyje trybu VXLAN)
       51820 # WireGuard (opcjonalnie, jeśli włączysz szyfrowanie w Calico)
     ];
 
     checkReversePath = "loose"; # Wymagane dla każdego CNI
   };
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
 
   # Port 6443 nie musi być otwierany globalnie
   # - tailscale0 jest już trusted w host/apps/tailscale/default.nix
