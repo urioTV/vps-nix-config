@@ -11,6 +11,7 @@ export function createNamespaces(provider: k8s.Provider) {
         "byparr",
         "minio",
         "monitoring",
+        "openclaw",
     ];
 
     const nsResources: Record<string, k8s.core.v1.Namespace> = {};

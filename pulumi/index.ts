@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust } from "./cloudflare";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createOpenclawZeroTrust } from "./cloudflare";
 import {
     createNamespaces,
     deployAiometadata,
@@ -13,6 +13,7 @@ import {
     deployMinio,
     deployCalico,
     deployMonitoring,
+    deployOpenclaw,
 } from "./kubernetes";
 
 // ============================================================================
@@ -77,6 +78,25 @@ const grafanaTunnel = createTunnel({
 createGrafanaZeroTrust({
     accountId: secrets.cloudflare_account_id,
     domainName: secrets.grafana_domain,
+    adminEmail: secrets.aiostreams_admin_email,
+    provider: cloudflareProvider,
+});
+
+// Create Cloudflare Tunnel for OpenClaw
+const openclawTunnel = createTunnel({
+    accountId: secrets.cloudflare_account_id,
+    zoneId: secrets.cloudflare_zone_id,
+    tunnelName: "openclaw-k8s",
+    domainName: secrets.openclaw_domain,
+    dnsRecordName: secrets.openclaw_domain.split(".")[0],
+    serviceUrl: "http://10.43.200.210:18789",
+    provider: cloudflareProvider,
+});
+
+// Create Zero Trust Access for OpenClaw
+createOpenclawZeroTrust({
+    accountId: secrets.cloudflare_account_id,
+    domainName: secrets.openclaw_domain,
     adminEmail: secrets.aiostreams_admin_email,
     provider: cloudflareProvider,
 });
@@ -147,6 +167,17 @@ const monitoringOps = deployMonitoring(
     k8sProvider
 );
 
+deployOpenclaw(
+    {
+        namespace: namespaces.openclaw,
+        tunnelToken: openclawTunnel.tunnelToken,
+        domain: secrets.openclaw_domain,
+        openrouterApiKey: secrets.openrouter_api_key,
+        gatewayToken: secrets.openclaw_gateway_token,
+    },
+    k8sProvider
+);
+
 // ============================================================================
 // Exports
 // ============================================================================
@@ -155,3 +186,4 @@ export const tunnelId = tunnel.tunnelId;
 export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const grafanaUrl = monitoringOps.grafanaUrl;
+export const openclawUrl = `https://${secrets.openclaw_domain}`;

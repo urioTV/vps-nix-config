@@ -33,6 +33,11 @@ export interface SecretsConfig {
     // Monitoring
     grafana_admin_password: string;
     grafana_domain: string;
+
+    // OpenClaw
+    openclaw_domain: string;
+    openrouter_api_key: string;
+    openclaw_gateway_token: string;
 }
 
 /**

@@ -7,3 +7,4 @@ export { deployMinio, MinioConfig } from "./minio";
 export { deployLonghorn } from "./longhorn";
 export { deployMonitoring } from "./monitoring";
 export { deployCalico } from "./cni/calico";
+export { deployOpenclaw, OpenclawConfig } from "./openclaw";

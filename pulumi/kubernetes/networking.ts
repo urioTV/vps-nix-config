@@ -9,6 +9,7 @@ export const serviceIPs = {
     jackett: "10.43.200.201",
     byparr: "10.43.200.202",
     monitoring: "10.43.200.203",
+    openclaw: "10.43.200.210",
     // Add new services here as needed
 } as const;
 
