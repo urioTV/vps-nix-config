@@ -4,11 +4,11 @@
     enable = true;
     role = "server";
     extraFlags = toString [
-      # "--disable=traefik" # Wyłącz wbudowany traefik (opcjonalne)
-      "--disable=local-storage" # Wyłącz wbudowany local-path
+      # "--disable=traefik" # Disable built-in traefik (optional)
+      "--disable=local-storage" # Disable built-in local-path
       "--tls-san=${config.networking.hostName}"
       "--flannel-backend=none"
-      "--disable-network-policy" # Calico zajmie się politykami
+      "--disable-network-policy" # Calico handles network policies
       "--cluster-cidr=10.42.0.0/16"
       "--service-cidr=10.43.0.0/16"
     ];
@@ -30,7 +30,7 @@
     name = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}";
   };
 
-  # Kubectl i helm w środowisku
+  # Kubectl and helm in system environment
   environment.systemPackages = with pkgs; [
     kubectl
     kubernetes-helm
@@ -41,7 +41,7 @@
     cryptsetup
   ];
 
-  # Longhorn oczekuje binarek w standardowych ścieżkach, których NixOS nie używa domyślnie.
+  # Longhorn expects binaries at standard paths that NixOS doesn't use by default.
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin/iscsiadm - - - - ${pkgs.openiscsi}/bin/iscsiadm"
   ];
@@ -50,32 +50,32 @@
     "br_netfilter"
     "overlay"
   ];
-  # 2. Firewall - Calico potrzebuje innych portów niż Flannel
+  # 2. Firewall - Calico requires different ports than Flannel
   networking.firewall = {
     enable = true;
     trustedInterfaces = [
       "cali+"
       "tunl0"
       "tailscale0"
-    ]; # Ufaj interfejsom Calico i Tailscale
+    ]; # Trust Calico and Tailscale interfaces
 
     allowedTCPPorts = [
-      # 179 # BGP (Calico) - kluczowe dla routingu
-      # 80, 443 - Twoje Ingressy
+      # 179 # BGP (Calico) - critical for routing
+      # 80, 443 - Ingresses
     ];
     allowedUDPPorts = [
-      # 4789 # VXLAN (jeśli Calico użyje trybu VXLAN)
-      51820 # WireGuard (opcjonalnie, jeśli włączysz szyfrowanie w Calico)
+      # 4789 # VXLAN (if Calico uses VXLAN mode)
+      51820 # WireGuard (optional, if Calico encryption is enabled)
     ];
 
-    checkReversePath = "loose"; # Wymagane dla każdego CNI
+    checkReversePath = "loose"; # Required for any CNI
   };
   networking.nameservers = [
     "1.1.1.1"
     "8.8.8.8"
   ];
 
-  # Port 6443 nie musi być otwierany globalnie
-  # - tailscale0 jest już trusted w host/apps/tailscale/default.nix
-  # - K8s API dostępne tylko przez Tailscale
+  # Port 6443 doesn't need to be opened globally
+  # - tailscale0 is already trusted in host/apps/tailscale/default.nix
+  # - K8s API is accessible only via Tailscale
 }

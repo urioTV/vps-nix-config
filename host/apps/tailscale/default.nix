@@ -14,13 +14,13 @@
     ];
   };
 
-  # IP forwarding dla kubernetes
+  # IP forwarding for Kubernetes
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
   };
 
-  # Firewall trust dla tailscale
+  # Firewall trust for Tailscale
   networking.firewall = {
     trustedInterfaces = [ "tailscale0" ];
     checkReversePath = "loose";
