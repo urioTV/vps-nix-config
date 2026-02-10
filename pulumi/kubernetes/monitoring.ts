@@ -1,10 +1,13 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
+import * as images from "../image-versions-manifest.json";
 import { getServiceIP } from "./networking";
 
 export interface MonitoringConfig {
     namespace: k8s.core.v1.Namespace;
     grafanaPassword: string;
+    tunnelToken: pulumi.Output<string>;
+    domain: string;
 }
 
 export interface MonitoringOutputs {
@@ -26,6 +29,7 @@ export function deployMonitoring(config: MonitoringConfig, provider: k8s.Provide
         repositoryOpts: {
             repo: "https://prometheus-community.github.io/helm-charts",
         },
+        name: "kube-prometheus-stack",
         namespace: ns,
         values: {
             // Prometheus Configuration
@@ -88,8 +92,61 @@ export function deployMonitoring(config: MonitoringConfig, provider: k8s.Provide
         },
     }, { provider, dependsOn: config.namespace });
 
+    // Cloudflare Tunnel for Grafana
+    // Functionally acts as a gateway/sidecar within the namespace
+    const tunnelSecret = new k8s.core.v1.Secret(
+        "grafana-tunnel-secret",
+        {
+            metadata: {
+                name: "grafana-tunnel-secret",
+                namespace: ns,
+            },
+            stringData: {
+                TUNNEL_TOKEN: config.tunnelToken,
+            },
+        },
+        { provider, dependsOn: [config.namespace] }
+    );
+
+    new k8s.apps.v1.Deployment(
+        "grafana-tunnel",
+        {
+            metadata: {
+                name: "grafana-tunnel",
+                namespace: ns,
+            },
+            spec: {
+                selector: { matchLabels: { app: "grafana-tunnel" } },
+                template: {
+                    metadata: { labels: { app: "grafana-tunnel" } },
+                    spec: {
+                        containers: [
+                            {
+                                name: "cloudflared",
+                                image: `${images.cloudflared.image}:${images.cloudflared.tag}`,
+                                args: ["tunnel", "--no-autoupdate", "run"],
+                                env: [
+                                    {
+                                        name: "TUNNEL_TOKEN",
+                                        valueFrom: {
+                                            secretKeyRef: {
+                                                name: "grafana-tunnel-secret",
+                                                key: "TUNNEL_TOKEN",
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+        { provider, dependsOn: [tunnelSecret] }
+    );
+
     // Output helpful info
-    const grafanaUrl = pulumi.interpolate`http://${getServiceIP("monitoring")}:80`;
+    const grafanaUrl = pulumi.interpolate`https://${config.domain}`;
 
     return {
         grafanaUrl,

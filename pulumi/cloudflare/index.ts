@@ -1,2 +1,3 @@
 export { createTunnel, TunnelConfig, TunnelOutputs } from "./tunnel";
-export { createZeroTrust, ZeroTrustConfig, ZeroTrustOutputs } from "./zero-trust";
+export { createAiostreamsZeroTrust, AiostreamsZeroTrustConfig, AiostreamsZeroTrustOutputs } from "./zero-trust-aiostreams";
+export { createGrafanaZeroTrust, GrafanaZeroTrustConfig, GrafanaZeroTrustOutputs } from "./zero-trust-grafana";

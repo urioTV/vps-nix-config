@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createZeroTrust } from "./cloudflare";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust } from "./cloudflare";
 import {
     createNamespaces,
     deployAiometadata,
@@ -55,9 +55,28 @@ const tunnel = createTunnel({
 });
 
 // Create Zero Trust Access policies and applications
-createZeroTrust({
+createAiostreamsZeroTrust({
     accountId: secrets.cloudflare_account_id,
     domainName: secrets.aiostreams_domain,
+    adminEmail: secrets.aiostreams_admin_email,
+    provider: cloudflareProvider,
+});
+
+// Create Cloudflare Tunnel for Grafana
+const grafanaTunnel = createTunnel({
+    accountId: secrets.cloudflare_account_id,
+    zoneId: secrets.cloudflare_zone_id,
+    tunnelName: "grafana-k8s",
+    domainName: secrets.grafana_domain,
+    dnsRecordName: secrets.grafana_domain.split(".")[0], // Assuming subdomain
+    serviceUrl: "http://10.43.200.203:80", // Grafana static ClusterIP (from networking.ts)
+    provider: cloudflareProvider,
+});
+
+// Create Zero Trust Access for Grafana
+createGrafanaZeroTrust({
+    accountId: secrets.cloudflare_account_id,
+    domainName: secrets.grafana_domain,
     adminEmail: secrets.aiostreams_admin_email,
     provider: cloudflareProvider,
 });
@@ -122,6 +141,8 @@ const monitoringOps = deployMonitoring(
     {
         namespace: namespaces.monitoring,
         grafanaPassword: secrets.grafana_admin_password,
+        tunnelToken: grafanaTunnel.tunnelToken,
+        domain: secrets.grafana_domain,
     },
     k8sProvider
 );

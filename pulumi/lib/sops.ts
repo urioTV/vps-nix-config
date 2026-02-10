@@ -32,6 +32,7 @@ export interface SecretsConfig {
 
     // Monitoring
     grafana_admin_password: string;
+    grafana_domain: string;
 }
 
 /**

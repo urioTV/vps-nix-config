@@ -25,12 +25,12 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
     const opts = { provider: config.provider };
 
     // Generate tunnel secret
-    const tunnelSecret = new random.RandomId("tunnel-secret", {
+    const tunnelSecret = new random.RandomId(`${config.tunnelName}-secret`, {
         byteLength: 35,
     });
 
     // Create the tunnel
-    const tunnel = new cloudflare.ZeroTrustTunnelCloudflared("aiostreams-tunnel", {
+    const tunnel = new cloudflare.ZeroTrustTunnelCloudflared(`${config.tunnelName}-tunnel`, {
         accountId: config.accountId,
         name: config.tunnelName,
         tunnelSecret: tunnelSecret.hex.apply((hex) => Buffer.from(hex).toString("base64")),
@@ -43,7 +43,7 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
     }, opts);
 
     // Configure tunnel ingress
-    new cloudflare.ZeroTrustTunnelCloudflaredConfig("aiostreams-tunnel-config", {
+    new cloudflare.ZeroTrustTunnelCloudflaredConfig(`${config.tunnelName}-config`, {
         accountId: config.accountId,
         tunnelId: tunnel.id,
         config: {
@@ -60,7 +60,7 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
     }, opts);
 
     // Create DNS record pointing to tunnel
-    new cloudflare.DnsRecord("aiostreams-dns", {
+    new cloudflare.DnsRecord(`${config.tunnelName}-dns`, {
         zoneId: config.zoneId,
         name: config.dnsRecordName,
         content: pulumi.interpolate`${tunnel.id}.cfargotunnel.com`,

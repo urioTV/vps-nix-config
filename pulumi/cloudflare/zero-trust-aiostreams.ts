@@ -1,14 +1,14 @@
 import * as cloudflare from "@pulumi/cloudflare";
 import * as pulumi from "@pulumi/pulumi";
 
-export interface ZeroTrustConfig {
+export interface AiostreamsZeroTrustConfig {
     accountId: string;
     domainName: string;
     adminEmail: string;
     provider: cloudflare.Provider;
 }
 
-export interface ZeroTrustOutputs {
+export interface AiostreamsZeroTrustOutputs {
     bypassPolicyId: pulumi.Output<string>;
     adminPolicyId: pulumi.Output<string>;
 }
@@ -20,7 +20,7 @@ export interface ZeroTrustOutputs {
  * - /stremio/configure → Protected by email authentication
  * - Stremio API paths → Publicly accessible (bypass)
  */
-export function createZeroTrust(config: ZeroTrustConfig): ZeroTrustOutputs {
+export function createAiostreamsZeroTrust(config: AiostreamsZeroTrustConfig): AiostreamsZeroTrustOutputs {
     const opts = { provider: config.provider };
 
     // --- Access Policies ---
