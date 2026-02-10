@@ -29,6 +29,9 @@ export interface SecretsConfig {
 
     // Jackett
     jackett_api_key: string;
+
+    // Monitoring
+    grafana_admin_password: string;
 }
 
 /**

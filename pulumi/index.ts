@@ -12,6 +12,7 @@ import {
     deployByparr,
     deployMinio,
     deployCalico,
+    deployMonitoring,
 } from "./kubernetes";
 
 // ============================================================================
@@ -116,6 +117,15 @@ deployByparr(
     k8sProvider
 );
 
+// Deploy Monitoring Stack (Prometheus + Grafana)
+const monitoringOps = deployMonitoring(
+    {
+        namespace: namespaces.monitoring,
+        grafanaPassword: secrets.grafana_admin_password,
+    },
+    k8sProvider
+);
+
 // ============================================================================
 // Exports
 // ============================================================================
@@ -123,3 +133,4 @@ deployByparr(
 export const tunnelId = tunnel.tunnelId;
 export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
+export const grafanaUrl = monitoringOps.grafanaUrl;

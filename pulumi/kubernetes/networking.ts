@@ -8,6 +8,7 @@ export const serviceIPs = {
     aiometadata: "10.43.200.200",
     jackett: "10.43.200.201",
     byparr: "10.43.200.202",
+    monitoring: "10.43.200.203",
     // Add new services here as needed
 } as const;
 
