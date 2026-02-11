@@ -65,6 +65,11 @@ export function deployOpenclaw(
                                     envFrom: [
                                         { secretRef: { name: "openclaw-env" } },
                                     ],
+                                    command: [
+                                        "sh",
+                                        "-c",
+                                        "node dist/index.js gateway --bind lan --port 18789 || (echo 'CRASH DETECTED - RUNNING DOCTOR...' && yes | node dist/index.js doctor --fix && echo 'FIX COMPLETE - RESTARTING...' && exit 1)",
+                                    ],
                                 },
                             },
                         },
@@ -78,7 +83,7 @@ export function deployOpenclaw(
                                     gateway: {
                                         port: 18789,
                                         mode: "local",
-                                        trustedProxies: ["10.42.0.0/16"],
+                                        trustedProxies: ["127.0.0.1", "10.42.0.0/16"],
                                         controlUi: {
                                             allowInsecureAuth: true,
                                         },
