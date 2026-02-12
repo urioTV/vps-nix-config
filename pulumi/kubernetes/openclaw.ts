@@ -70,6 +70,9 @@ export function deployOpenclaw(
                                         "-c",
                                         "node dist/index.js gateway --bind lan --port 18789 || (echo 'CRASH DETECTED - RUNNING DOCTOR...' && yes | node dist/index.js doctor --fix && echo 'FIX COMPLETE - RESTARTING...' && exit 1)",
                                     ],
+                                    env: {
+                                        BROWSER_CDP_URL: "http://127.0.0.1:9222",
+                                    },
                                 },
                             },
                         },
@@ -93,6 +96,7 @@ export function deployOpenclaw(
                                     },
                                     env: {
                                         OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}",
+                                        BROWSER_CDP_URL: "${BROWSER_CDP_URL}",
                                     },
                                 }),
                             },
