@@ -38,6 +38,10 @@ export interface SecretsConfig {
     openclaw_domain: string;
     openrouter_api_key: string;
     openclaw_gateway_token: string;
+
+    // Perplexica
+    perplexica_domain: string;
+    perplexica_admin_email: string;
 }
 
 /**

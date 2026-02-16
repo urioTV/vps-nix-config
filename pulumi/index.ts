@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createOpenclawZeroTrust } from "./cloudflare";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createOpenclawZeroTrust, createPerplexicaZeroTrust } from "./cloudflare";
 import {
     createNamespaces,
     deployAiometadata,
@@ -14,6 +14,7 @@ import {
     deployCalico,
     deployMonitoring,
     deployOpenclaw,
+    deployPerplexica,
 } from "./kubernetes";
 
 // ============================================================================
@@ -101,6 +102,25 @@ createOpenclawZeroTrust({
     provider: cloudflareProvider,
 });
 
+// Create Cloudflare Tunnel for Perplexica
+const perplexicaTunnel = createTunnel({
+    accountId: secrets.cloudflare_account_id,
+    zoneId: secrets.cloudflare_zone_id,
+    tunnelName: "perplexica-k8s",
+    domainName: secrets.perplexica_domain,
+    dnsRecordName: secrets.perplexica_domain.split(".")[0],
+    serviceUrl: "http://perplexica.perplexica:3000",
+    provider: cloudflareProvider,
+});
+
+// Create Zero Trust Access for Perplexica
+createPerplexicaZeroTrust({
+    accountId: secrets.cloudflare_account_id,
+    domainName: secrets.perplexica_domain,
+    adminEmail: secrets.perplexica_admin_email,
+    provider: cloudflareProvider,
+});
+
 // ============================================================================
 // Kubernetes Resources
 // ============================================================================
@@ -178,6 +198,15 @@ deployOpenclaw(
     k8sProvider
 );
 
+deployPerplexica(
+    {
+        namespace: namespaces.perplexica,
+        tunnelToken: perplexicaTunnel.tunnelToken,
+        domain: secrets.perplexica_domain,
+    },
+    k8sProvider
+);
+
 // ============================================================================
 // Exports
 // ============================================================================
@@ -187,3 +216,4 @@ export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const grafanaUrl = monitoringOps.grafanaUrl;
 export const openclawUrl = `https://${secrets.openclaw_domain}`;
+export const perplexicaUrl = `https://${secrets.perplexica_domain}`;

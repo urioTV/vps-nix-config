@@ -26,5 +26,9 @@
     "cloudflared": {
         "image": "cloudflare/cloudflared",
         "tag": "2026.1.2"
+    },
+    "perplexica": {
+        "image": "itzcrazykns1337/perplexica",
+        "tag": "latest"
     }
 }
