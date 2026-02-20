@@ -45,3 +45,6 @@ pulumi/*.log
 
 # Backups
 backups/
+
+# AGENTS
+AGENTS.md
