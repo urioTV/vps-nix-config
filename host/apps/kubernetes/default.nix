@@ -62,14 +62,16 @@
     allowedTCPPorts = [
       # 179 # BGP (Calico) - critical for routing
       # 80, 443 - Ingresses
+      30000 # Syncthing sync (NodePort)
     ];
     allowedUDPPorts = [
       # 4789 # VXLAN (if Calico uses VXLAN mode)
       51820 # WireGuard (optional, if Calico encryption is enabled)
+      30000 # Syncthing sync (NodePort - UDP for discovery)
+      30001 # Syncthing relay (NodePort - UDP for relay)
     ];
-
-    checkReversePath = "loose"; # Required for any CNI
   };
+
   networking.nameservers = [
     "1.1.1.1"
     "8.8.8.8"
