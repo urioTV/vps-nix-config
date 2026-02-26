@@ -1,21 +1,9 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
-
 import { loadSecrets } from "./lib/sops";
 import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createOpenclawZeroTrust, createPerplexicaZeroTrust } from "./cloudflare";
-import {
-    createNamespaces,
-    deployAiometadata,
-    deployAiostreams,
-    deployJackett,
-    deployByparr,
-    deployMinio,
-    deployCalico,
-    deployMonitoring,
-    deployOpenclaw,
-    deployPerplexica,
-} from "./kubernetes";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployOpenclaw, deployPerplexica, deploySyncthing, deploySyncthingRelay } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -206,6 +194,24 @@ deployPerplexica(
     },
     k8sProvider
 );
+// Deploy Syncthing
+deploySyncthing(
+    { namespace: namespaces.syncthing },
+    k8sProvider
+);
+// Deploy Syncthing Relay
+deploySyncthingRelay(
+    { namespace: namespaces["syncthing-relay"] },
+    k8sProvider
+);
+
+// ============================================================================
+// Exports
+// ============================================================================
+
+// ============================================================================
+// Exports
+// ============================================================================
 
 // ============================================================================
 // Exports

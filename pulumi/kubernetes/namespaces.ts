@@ -7,12 +7,14 @@ export function createNamespaces(provider: k8s.Provider) {
     const namespaces = [
         "aiometadata",
         "aiostreams",
-        "jackett",
         "byparr",
+        "jackett",
         "minio",
         "monitoring",
         "openclaw",
         "perplexica",
+        "syncthing",
+        "syncthing-relay",
     ];
 
     const nsResources: Record<string, k8s.core.v1.Namespace> = {};

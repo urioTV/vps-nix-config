@@ -9,12 +9,13 @@ export const serviceIPs = {
     jackett: "10.43.200.201",
     byparr: "10.43.200.202",
     monitoring: "10.43.200.203",
+    syncthing: "10.43.200.204",
+    "syncthing-relay": "10.43.200.205",
     openclaw: "10.43.200.210",
     // Add new services here as needed
 } as const;
 
 export type ServiceName = keyof typeof serviceIPs;
-
 /**
  * Generate hostAliases for a Pod spec from a list of service names.
  * @example hostAliases: getHostAliases(["aiometadata", "jackett"])

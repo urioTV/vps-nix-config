@@ -30,5 +30,13 @@
     "perplexica": {
         "image": "itzcrazykns1337/perplexica",
         "tag": "latest"
+    },
+    "syncthing": {
+        "image": "syncthing/syncthing",
+        "tag": "latest"
+    },
+    "syncthing-relay": {
+        "image": "syncthing/relaysrv",
+        "tag": "latest"
     }
 }

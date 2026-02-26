@@ -8,4 +8,6 @@ export { deployLonghorn } from "./longhorn";
 export { deployMonitoring } from "./monitoring";
 export { deployCalico } from "./cni/calico";
 export { deployOpenclaw, OpenclawConfig } from "./openclaw";
+export { deploySyncthingRelay, SyncthingRelayConfig } from "./syncthing-relay";
+export { deploySyncthing, SyncthingConfig } from "./syncthing";
 export { deployPerplexica, PerplexicaConfig } from "./perplexica";
