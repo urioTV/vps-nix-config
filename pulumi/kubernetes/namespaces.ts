@@ -5,6 +5,7 @@ import * as k8s from "@pulumi/kubernetes";
  */
 export function createNamespaces(provider: k8s.Provider) {
     const namespaces = [
+        "cert-manager",
         "aiometadata",
         "aiostreams",
         "byparr",
