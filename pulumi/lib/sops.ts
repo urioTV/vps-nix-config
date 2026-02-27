@@ -42,6 +42,9 @@ export interface SecretsConfig {
     // Perplexica
     perplexica_domain: string;
     perplexica_admin_email: string;
+
+    // Syncthing Discovery
+    syncthing_discovery_domain: string;
 }
 
 /**

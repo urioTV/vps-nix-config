@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
 import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createOpenclawZeroTrust, createPerplexicaZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployOpenclaw, deployPerplexica, deploySyncthing, deploySyncthingRelay } from "./kubernetes";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployOpenclaw, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -205,13 +205,25 @@ deploySyncthingRelay(
     k8sProvider
 );
 
-// ============================================================================
-// Exports
-// ============================================================================
+// Deploy cert-manager with Cloudflare DNS-01 ClusterIssuer
+deployCertManager(
+    {
+        namespace: namespaces["cert-manager"],
+        cloudflareApiToken: secrets.cloudflare_api_token,
+        cloudflareEmail: secrets.aiostreams_admin_email,
+    },
+    k8sProvider
+);
 
-// ============================================================================
-// Exports
-// ============================================================================
+// Deploy Syncthing Discovery Server (HTTPS via cert-manager)
+deploySyncthingDiscovery(
+    {
+        namespace: namespaces.syncthing,
+        domain: secrets.syncthing_discovery_domain,
+    },
+    k8sProvider
+);
+
 
 // ============================================================================
 // Exports
@@ -223,3 +235,4 @@ export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const grafanaUrl = monitoringOps.grafanaUrl;
 export const openclawUrl = `https://${secrets.openclaw_domain}`;
 export const perplexicaUrl = `https://${secrets.perplexica_domain}`;
+export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;

@@ -11,3 +11,5 @@ export { deployOpenclaw, OpenclawConfig } from "./openclaw";
 export { deploySyncthingRelay, SyncthingRelayConfig } from "./syncthing-relay";
 export { deploySyncthing, SyncthingConfig } from "./syncthing";
 export { deployPerplexica, PerplexicaConfig } from "./perplexica";
+export { deploySyncthingDiscovery, SyncthingDiscoveryConfig } from "./syncthing-discovery";
+export { deployCertManager, CertManagerConfig } from "./cert-manager";
