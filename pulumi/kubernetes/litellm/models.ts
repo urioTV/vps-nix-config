@@ -15,6 +15,10 @@ export const models: ModelConfig[] = [
         model: "zai/glm-5",
         apiKeyEnvVar: "ZAI_API_KEY",
         priority: 1,
+        extraParams: {
+            // timeout: 120,
+            api_base: "https://api.z.ai/api/coding/paas/v4"
+        }
     },
     {
         name: "glm-5",
@@ -38,6 +42,10 @@ export const models: ModelConfig[] = [
         model: "zai/glm-4.7",
         apiKeyEnvVar: "ZAI_API_KEY",
         priority: 1,
+        extraParams: {
+            timeout: 120,
+            api_base: "https://api.z.ai/api/coding/paas/v4"
+        }
     },
     {
         name: "glm-4.7",
@@ -229,12 +237,12 @@ export function generateConfigYaml(): string {
             let actualModel = m.model;
             let apiBaseStr = "";
             let orderStr = "";
-            
+
             if (m.provider === "nanogpt") {
                 actualModel = actualModel.replace("nanogpt/", "openai/");
                 apiBaseStr = `\n      api_base: https://nano-gpt.com/api/v1`;
             }
-            
+
             if (m.priority !== undefined) {
                 orderStr = `\n      order: ${m.priority}`;
             }
