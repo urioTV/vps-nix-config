@@ -85,22 +85,6 @@ export const models: ModelConfig[] = [
         priority: 2,
     },
 
-    // Qwen3.5-397b-thinking - Fallback: Nano-GPT > OpenRouter
-    {
-        name: "qwen3.5-397b-thinking",
-        provider: "nanogpt",
-        model: "nanogpt/qwen3.5-397b-a17b:thinking",
-        apiKeyEnvVar: "NANOGPT_API_KEY",
-        priority: 1,
-    },
-    {
-        name: "qwen3.5-397b-thinking",
-        provider: "openrouter",
-        model: "openrouter/qwen/qwen3.5-397b-a17b:thinking",
-        apiKeyEnvVar: "OPENROUTER_API_KEY",
-        priority: 2,
-    },
-
     // Qwen3.5-122b - Fallback: Nano-GPT > OpenRouter
     {
         name: "qwen3.5-122b",
@@ -113,22 +97,6 @@ export const models: ModelConfig[] = [
         name: "qwen3.5-122b",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-122b-a10b",
-        apiKeyEnvVar: "OPENROUTER_API_KEY",
-        priority: 2,
-    },
-
-    // Qwen3.5-122b-thinking - Fallback: Nano-GPT > OpenRouter
-    {
-        name: "qwen3.5-122b-thinking",
-        provider: "nanogpt",
-        model: "nanogpt/qwen3.5-122b-a10b:thinking",
-        apiKeyEnvVar: "NANOGPT_API_KEY",
-        priority: 1,
-    },
-    {
-        name: "qwen3.5-122b-thinking",
-        provider: "openrouter",
-        model: "openrouter/qwen/qwen3.5-122b-a10b:thinking",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
         priority: 2,
     },
@@ -149,22 +117,6 @@ export const models: ModelConfig[] = [
         priority: 2,
     },
 
-    // Qwen3.5-35b-thinking - Fallback: Nano-GPT > OpenRouter
-    {
-        name: "qwen3.5-35b-thinking",
-        provider: "nanogpt",
-        model: "nanogpt/qwen3.5-35b-a3b:thinking",
-        apiKeyEnvVar: "NANOGPT_API_KEY",
-        priority: 1,
-    },
-    {
-        name: "qwen3.5-35b-thinking",
-        provider: "openrouter",
-        model: "openrouter/qwen/qwen3.5-35b-a3b:thinking",
-        apiKeyEnvVar: "OPENROUTER_API_KEY",
-        priority: 2,
-    },
-
     // Qwen3.5-27b - Fallback: Nano-GPT > OpenRouter
     {
         name: "qwen3.5-27b",
@@ -177,22 +129,6 @@ export const models: ModelConfig[] = [
         name: "qwen3.5-27b",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-27b",
-        apiKeyEnvVar: "OPENROUTER_API_KEY",
-        priority: 2,
-    },
-
-    // Qwen3.5-27b-thinking - Fallback: Nano-GPT > OpenRouter
-    {
-        name: "qwen3.5-27b-thinking",
-        provider: "nanogpt",
-        model: "nanogpt/qwen3.5-27b:thinking",
-        apiKeyEnvVar: "NANOGPT_API_KEY",
-        priority: 1,
-    },
-    {
-        name: "qwen3.5-27b-thinking",
-        provider: "openrouter",
-        model: "openrouter/qwen/qwen3.5-27b:thinking",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
         priority: 2,
     },
