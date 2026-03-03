@@ -6,7 +6,115 @@ export interface ModelConfig {
 }
 
 export const models: ModelConfig[] = [
-    // OpenRouter models
+    // ============================================================================
+    // GLM-5 Series (Z.ai via OpenRouter)
+    // ============================================================================
+    {
+        name: "glm-5",
+        provider: "openrouter",
+        model: "openrouter/z-ai/glm-5",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+
+    // ============================================================================
+    // GLM-4.7 Series (Z.ai via OpenRouter)
+    // ============================================================================
+    {
+        name: "glm-4.7",
+        provider: "openrouter",
+        model: "openrouter/z-ai/glm-4.7",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "glm-4.7-flash",
+        provider: "openrouter",
+        model: "openrouter/z-ai/glm-4.7-flash",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+
+    // ============================================================================
+    // Qwen3.5 Series (via OpenRouter)
+    // ============================================================================
+    {
+        name: "qwen3.5-397b",
+        provider: "openrouter",
+        model: "openrouter/qwen/qwen3.5-397b-a17b",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "qwen3.5-122b",
+        provider: "openrouter",
+        model: "openrouter/qwen/qwen3.5-122b-a10b",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "qwen3.5-35b",
+        provider: "openrouter",
+        model: "openrouter/qwen/qwen3.5-35b-a3b",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "qwen3.5-27b",
+        provider: "openrouter",
+        model: "openrouter/qwen/qwen3.5-27b",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "qwen3.5-flash",
+        provider: "openrouter",
+        model: "openrouter/qwen/qwen3.5-flash-02-23",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "qwen3.5-plus",
+        provider: "openrouter",
+        model: "openrouter/qwen/qwen3.5-plus-02-15",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+
+    // ============================================================================
+    // MiniMax M2.5 Series (via OpenRouter)
+    // ============================================================================
+    {
+        name: "minimax-m2.5",
+        provider: "openrouter",
+        model: "openrouter/minimax/minimax-m2.5",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "minimax-m2.1",
+        provider: "openrouter",
+        model: "openrouter/minimax/minimax-m2.1",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "minimax-m2",
+        provider: "openrouter",
+        model: "openrouter/minimax/minimax-m2",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "minimax-m2-her",
+        provider: "openrouter",
+        model: "openrouter/minimax/minimax-m2-her",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "minimax-m1",
+        provider: "openrouter",
+        model: "openrouter/minimax/minimax-m1",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+    {
+        name: "minimax-01",
+        provider: "openrouter",
+        model: "openrouter/minimax/minimax-01",
+        apiKeyEnvVar: "OPENROUTER_API_KEY",
+    },
+
+    // ============================================================================
+    // OpenRouter - Other Popular Models
+    // ============================================================================
     {
         name: "openrouter-auto",
         provider: "openrouter",
@@ -74,7 +182,9 @@ export const models: ModelConfig[] = [
         apiKeyEnvVar: "OPENROUTER_API_KEY",
     },
 
-    // Nano-GPT models
+    // ============================================================================
+    // Nano-GPT Models
+    // ============================================================================
     {
         name: "nanogpt-4o",
         provider: "nanogpt",
@@ -100,7 +210,9 @@ export const models: ModelConfig[] = [
         apiKeyEnvVar: "NANOGPT_API_KEY",
     },
 
-    // GLM Coding Plan (ZhipuAI)
+    // ============================================================================
+    // GLM Coding Plan (ZhipuAI direct API)
+    // ============================================================================
     {
         name: "glm-4-plus",
         provider: "glm",
