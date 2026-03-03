@@ -47,6 +47,7 @@ export interface SecretsConfig {
     litellm_postgres_password: string;
     litellm_domain: string;
     zai_api_key: string;
+    nanogpt_api_key: string;
     openrouter_api_key: string;
 }
 

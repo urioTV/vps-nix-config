@@ -7,7 +7,7 @@ export interface ModelConfig {
 }
 
 export const models: ModelConfig[] = [
-    // GLM-5 - Fallback: GLM Coding Plan > OpenRouter
+    // GLM-5 - Fallback: GLM Coding Plan > Nano-GPT > OpenRouter
     {
         name: "glm-5",
         provider: "zai",
@@ -17,13 +17,20 @@ export const models: ModelConfig[] = [
     },
     {
         name: "glm-5",
+        provider: "nanogpt",
+        model: "nanogpt/glm-5",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 2,
+    },
+    {
+        name: "glm-5",
         provider: "openrouter",
         model: "openrouter/z-ai/glm-5",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
-        priority: 2,
+        priority: 3,
     },
 
-    // GLM-4.7 - Fallback: GLM Coding Plan > OpenRouter
+    // GLM-4.7 - Fallback: GLM Coding Plan > Nano-GPT > OpenRouter
     {
         name: "glm-4.7",
         provider: "zai",
@@ -33,64 +40,145 @@ export const models: ModelConfig[] = [
     },
     {
         name: "glm-4.7",
+        provider: "nanogpt",
+        model: "nanogpt/glm-4.7",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 2,
+    },
+    {
+        name: "glm-4.7",
         provider: "openrouter",
         model: "openrouter/z-ai/glm-4.7",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
-        priority: 2,
+        priority: 3,
     },
 
-    // GLM-4.7-flash - OpenRouter only
+    // GLM-4.7-flash - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "glm-4.7-flash",
+        provider: "nanogpt",
+        model: "nanogpt/glm-4.7-flash",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
+    },
     {
         name: "glm-4.7-flash",
         provider: "openrouter",
         model: "openrouter/z-ai/glm-4.7-flash",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
     },
 
-    // Qwen3.5 Series - OpenRouter only
+    // Qwen3.5-397b - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "qwen3.5-397b",
+        provider: "nanogpt",
+        model: "nanogpt/qwen3.5-397b-a17b",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
+    },
     {
         name: "qwen3.5-397b",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-397b-a17b",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
+    },
+
+    // Qwen3.5-122b - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "qwen3.5-122b",
+        provider: "nanogpt",
+        model: "nanogpt/qwen3.5-122b-a10b",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
     },
     {
         name: "qwen3.5-122b",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-122b-a10b",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
+    },
+
+    // Qwen3.5-35b - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "qwen3.5-35b",
+        provider: "nanogpt",
+        model: "nanogpt/qwen3.5-35b-a3b",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
     },
     {
         name: "qwen3.5-35b",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-35b-a3b",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
+    },
+
+    // Qwen3.5-27b - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "qwen3.5-27b",
+        provider: "nanogpt",
+        model: "nanogpt/qwen3.5-27b",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
     },
     {
         name: "qwen3.5-27b",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-27b",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
+    },
+
+    // Qwen3.5-flash - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "qwen3.5-flash",
+        provider: "nanogpt",
+        model: "nanogpt/qwen3.5-flash",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
     },
     {
         name: "qwen3.5-flash",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-flash-02-23",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
+    },
+
+    // Qwen3.5-plus - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "qwen3.5-plus",
+        provider: "nanogpt",
+        model: "nanogpt/qwen3.5-plus",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
     },
     {
         name: "qwen3.5-plus",
         provider: "openrouter",
         model: "openrouter/qwen/qwen3.5-plus-02-15",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
     },
 
-    // MiniMax M2.5 - OpenRouter only
+    // MiniMax M2.5 - Fallback: Nano-GPT > OpenRouter
+    {
+        name: "minimax-m2.5",
+        provider: "nanogpt",
+        model: "nanogpt/minimax-m2.5",
+        apiKeyEnvVar: "NANOGPT_API_KEY",
+        priority: 1,
+    },
     {
         name: "minimax-m2.5",
         provider: "openrouter",
         model: "openrouter/minimax/minimax-m2.5",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
     },
 ];
 

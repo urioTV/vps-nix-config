@@ -220,6 +220,7 @@ const litellm = deployLiteLLMProxy(
         tunnelToken: litellmTunnel.tunnelToken,
         apiKeys: {
             zai: secrets.zai_api_key,
+            nanogpt: secrets.nanogpt_api_key,
             openrouter: secrets.openrouter_api_key,
         },
     },
