@@ -6,13 +6,15 @@ import { getServiceIP } from "./networking";
 export interface LiteLLMConfig {
     namespace: k8s.core.v1.Namespace;
     postgresServiceName: string;
+    domain: string;
 }
 
 export interface LiteLLMOutputs {
     deployment: k8s.apps.v1.Deployment;
     service: k8s.core.v1.Service;
-    externalService: k8s.core.v1.Service;
     secret: k8s.core.v1.Secret;
+    certificate: k8s.apiextensions.CustomResource;
+    ingressRoute: k8s.apiextensions.CustomResource;
 }
 
 export function deployLiteLLM(
@@ -101,18 +103,57 @@ export function deployLiteLLM(
         { provider, dependsOn: [config.namespace] }
     );
 
-    const externalService = new k8s.core.v1.Service(
-        `${appName}-external`,
+    const certificate = new k8s.apiextensions.CustomResource(
+        `${appName}-certificate`,
         {
-            metadata: { name: `${appName}-external`, namespace: ns },
+            apiVersion: "cert-manager.io/v1",
+            kind: "Certificate",
+            metadata: {
+                name: `${appName}-tls`,
+                namespace: ns,
+            },
             spec: {
-                type: "NodePort",
-                selector: { app: appName },
-                ports: [{ port: 4000, targetPort: 4000, nodePort: 30002 }],
+                secretName: `${appName}-tls`,
+                issuerRef: {
+                    name: "letsencrypt-cloudflare",
+                    kind: "ClusterIssuer",
+                },
+                dnsNames: [config.domain],
             },
         },
-        { provider, dependsOn: [config.namespace] }
+        { provider }
     );
 
-    return { deployment, service, externalService, secret };
+    const ingressRoute = new k8s.apiextensions.CustomResource(
+        `${appName}-ingressroute`,
+        {
+            apiVersion: "traefik.io/v1alpha1",
+            kind: "IngressRoute",
+            metadata: {
+                name: appName,
+                namespace: ns,
+            },
+            spec: {
+                entryPoints: ["websecure"],
+                routes: [
+                    {
+                        match: `Host(\`${config.domain}\`)`,
+                        kind: "Rule",
+                        services: [
+                            {
+                                name: appName,
+                                port: 4000,
+                            },
+                        ],
+                    },
+                ],
+                tls: {
+                    secretName: `${appName}-tls`,
+                },
+            },
+        },
+        { provider, dependsOn: [service, certificate] }
+    );
+
+    return { deployment, service, secret, certificate, ingressRoute };
 }

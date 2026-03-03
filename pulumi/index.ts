@@ -206,6 +206,7 @@ const litellm = deployLiteLLM(
     {
         namespace: namespaces.litellm,
         postgresServiceName: litellmPostgres.serviceName,
+        domain: secrets.litellm_domain,
     },
     k8sProvider,
     secrets.litellm_master_key,
@@ -224,5 +225,4 @@ export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const grafanaUrl = monitoringOps.grafanaUrl;
 export const perplexicaUrl = `https://${secrets.perplexica_domain}`;
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;
-export const litellmClusterIP = `http://10.43.200.207:4000`;
-export const litellmNodePort = `http://<vps-ip>:30002`;
+export const litellmUrl = `https://${secrets.litellm_domain}`;

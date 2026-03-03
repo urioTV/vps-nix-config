@@ -45,6 +45,7 @@ export interface SecretsConfig {
     litellm_master_key: string;
     litellm_salt_key: string;
     litellm_postgres_password: string;
+    litellm_domain: string;
 }
 
 /**
