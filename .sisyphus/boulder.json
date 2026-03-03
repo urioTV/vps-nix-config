@@ -1,0 +1,10 @@
+{
+  "active_plan": "/Users/urio/Projects/vps-nix-config/.sisyphus/plans/litellm-deployment.md",
+  "started_at": "2026-03-03T15:03:36.345Z",
+  "session_ids": [
+    "ses_34be7c2f6ffeMSt1WVE2PZeul7"
+  ],
+  "plan_name": "litellm-deployment",
+  "agent": "atlas",
+  "worktree_path": "/Users/urio/Projects/vps-nix-config"
+}

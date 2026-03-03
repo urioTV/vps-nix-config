@@ -225,4 +225,4 @@ export const grafanaUrl = monitoringOps.grafanaUrl;
 export const perplexicaUrl = `https://${secrets.perplexica_domain}`;
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;
 export const litellmClusterIP = `http://10.43.200.207:4000`;
-export const litellmNodePort = `http://<vps-ip>:30001`;
+export const litellmNodePort = `http://<vps-ip>:30002`;

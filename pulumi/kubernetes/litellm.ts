@@ -66,8 +66,18 @@ export function deployLiteLLM(
                             ],
                             ports: [{ containerPort: 4000 }],
                             resources: {
-                                requests: { cpu: "100m", memory: "256Mi" },
-                                limits: { cpu: "500m", memory: "512Mi" },
+                                requests: { cpu: "100m", memory: "512Mi" },
+                                limits: { cpu: "1000m", memory: "1Gi" },
+                            },
+                            readinessProbe: {
+                                httpGet: { path: "/health/liveliness", port: 4000 },
+                                initialDelaySeconds: 30,
+                                periodSeconds: 10,
+                            },
+                            livenessProbe: {
+                                httpGet: { path: "/health/liveliness", port: 4000 },
+                                initialDelaySeconds: 60,
+                                periodSeconds: 30,
                             },
                         }],
                     },
@@ -98,7 +108,7 @@ export function deployLiteLLM(
             spec: {
                 type: "NodePort",
                 selector: { app: appName },
-                ports: [{ port: 4000, targetPort: 4000, nodePort: 30001 }],
+                ports: [{ port: 4000, targetPort: 4000, nodePort: 30002 }],
             },
         },
         { provider, dependsOn: [config.namespace] }

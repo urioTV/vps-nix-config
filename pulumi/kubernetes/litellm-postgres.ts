@@ -65,6 +65,7 @@ export function deployLiteLLMPostgres(
                                     name: "POSTGRES_PASSWORD",
                                     valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "password" } },
                                 },
+                                { name: "PGDATA", value: "/var/lib/postgresql/data/pgdata" },
                             ],
                             ports: [{ containerPort: 5432 }],
                             volumeMounts: [{ name: "data", mountPath: "/var/lib/postgresql/data" }],
