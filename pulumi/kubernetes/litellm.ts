@@ -7,14 +7,14 @@ export interface LiteLLMConfig {
     namespace: k8s.core.v1.Namespace;
     postgresServiceName: string;
     domain: string;
+    tunnelToken: pulumi.Output<string>;
 }
 
 export interface LiteLLMOutputs {
     deployment: k8s.apps.v1.Deployment;
     service: k8s.core.v1.Service;
     secret: k8s.core.v1.Secret;
-    certificate: k8s.apiextensions.CustomResource;
-    ingressRoute: k8s.apiextensions.CustomResource;
+    tunnelDeployment: k8s.apps.v1.Deployment;
 }
 
 export function deployLiteLLM(
@@ -103,57 +103,47 @@ export function deployLiteLLM(
         { provider, dependsOn: [config.namespace] }
     );
 
-    const certificate = new k8s.apiextensions.CustomResource(
-        `${appName}-certificate`,
+    const tunnelSecret = new k8s.core.v1.Secret(
+        `${appName}-tunnel-secret`,
         {
-            apiVersion: "cert-manager.io/v1",
-            kind: "Certificate",
-            metadata: {
-                name: `${appName}-tls`,
-                namespace: ns,
-            },
-            spec: {
-                secretName: `${appName}-tls`,
-                issuerRef: {
-                    name: "letsencrypt-cloudflare",
-                    kind: "ClusterIssuer",
-                },
-                dnsNames: [config.domain],
+            metadata: { name: `${appName}-tunnel-secret`, namespace: ns },
+            stringData: {
+                TUNNEL_TOKEN: config.tunnelToken,
             },
         },
-        { provider }
+        { provider, dependsOn: [config.namespace] }
     );
 
-    const ingressRoute = new k8s.apiextensions.CustomResource(
-        `${appName}-ingressroute`,
+    const tunnelDeployment = new k8s.apps.v1.Deployment(
+        `${appName}-tunnel`,
         {
-            apiVersion: "traefik.io/v1alpha1",
-            kind: "IngressRoute",
-            metadata: {
-                name: appName,
-                namespace: ns,
-            },
+            metadata: { name: `${appName}-tunnel`, namespace: ns },
             spec: {
-                entryPoints: ["websecure"],
-                routes: [
-                    {
-                        match: `Host(\`${config.domain}\`)`,
-                        kind: "Rule",
-                        services: [
-                            {
-                                name: appName,
-                                port: 4000,
-                            },
-                        ],
+                replicas: 1,
+                selector: { matchLabels: { app: `${appName}-tunnel` } },
+                template: {
+                    metadata: { labels: { app: `${appName}-tunnel` } },
+                    spec: {
+                        containers: [{
+                            name: "cloudflared",
+                            image: `${images.cloudflared.image}:${images.cloudflared.tag}`,
+                            args: ["tunnel", "--no-autoupdate", "run"],
+                            env: [{
+                                name: "TUNNEL_TOKEN",
+                                valueFrom: {
+                                    secretKeyRef: {
+                                        name: `${appName}-tunnel-secret`,
+                                        key: "TUNNEL_TOKEN",
+                                    },
+                                },
+                            }],
+                        }],
                     },
-                ],
-                tls: {
-                    secretName: `${appName}-tls`,
                 },
             },
         },
-        { provider, dependsOn: [service, certificate] }
+        { provider, dependsOn: [tunnelSecret] }
     );
 
-    return { deployment, service, secret, certificate, ingressRoute };
+    return { deployment, service, secret, tunnelDeployment };
 }
