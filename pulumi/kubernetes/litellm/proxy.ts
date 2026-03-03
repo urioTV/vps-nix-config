@@ -24,9 +24,8 @@ export function deployLiteLLMProxy(
             stringData: {
                 "master-key": masterKey,
                 "salt-key": saltKey,
+                "zai-api-key": config.apiKeys.zai,
                 "openrouter-api-key": config.apiKeys.openrouter,
-                "nanogpt-api-key": config.apiKeys.nanogpt,
-                "glm-api-key": config.apiKeys.glm,
             },
         },
         { provider, dependsOn: [config.namespace] }
@@ -70,16 +69,12 @@ export function deployLiteLLMProxy(
                                     valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "salt-key" } },
                                 },
                                 {
+                                    name: "ZAI_API_KEY",
+                                    valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "zai-api-key" } },
+                                },
+                                {
                                     name: "OPENROUTER_API_KEY",
                                     valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "openrouter-api-key" } },
-                                },
-                                {
-                                    name: "NANOGPT_API_KEY",
-                                    valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "nanogpt-api-key" } },
-                                },
-                                {
-                                    name: "GLM_API_KEY",
-                                    valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "glm-api-key" } },
                                 },
                                 { name: "DISABLE_ADMIN_UI", value: "True" },
                             ],

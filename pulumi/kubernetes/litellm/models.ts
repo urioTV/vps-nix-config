@@ -7,23 +7,39 @@ export interface ModelConfig {
 }
 
 export const models: ModelConfig[] = [
-    // GLM-5 (OpenRouter)
+    // GLM-5 - Fallback: GLM Coding Plan > OpenRouter
+    {
+        name: "glm-5",
+        provider: "zai",
+        model: "zai/glm-5",
+        apiKeyEnvVar: "ZAI_API_KEY",
+        priority: 1,
+    },
     {
         name: "glm-5",
         provider: "openrouter",
         model: "openrouter/z-ai/glm-5",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
     },
 
-    // GLM-4.7 (OpenRouter)
+    // GLM-4.7 - Fallback: GLM Coding Plan > OpenRouter
+    {
+        name: "glm-4.7",
+        provider: "zai",
+        model: "zai/glm-4.7",
+        apiKeyEnvVar: "ZAI_API_KEY",
+        priority: 1,
+    },
     {
         name: "glm-4.7",
         provider: "openrouter",
         model: "openrouter/z-ai/glm-4.7",
         apiKeyEnvVar: "OPENROUTER_API_KEY",
+        priority: 2,
     },
 
-    // GLM-4.7-flash (OpenRouter)
+    // GLM-4.7-flash - OpenRouter only (not in GLM Coding Plan)
     {
         name: "glm-4.7-flash",
         provider: "openrouter",
