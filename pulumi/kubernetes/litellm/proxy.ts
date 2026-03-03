@@ -1,31 +1,19 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
-import * as images from "../image-versions-manifest.json";
-import { getServiceIP } from "./networking";
+import * as images from "../../image-versions-manifest.json";
+import { getServiceIP } from "../networking";
+import type { LiteLLMProxyConfig, LiteLLMProxyOutputs } from "./types";
+import { generateConfigYaml } from "./models";
 
-export interface LiteLLMConfig {
-    namespace: k8s.core.v1.Namespace;
-    postgresServiceName: string;
-    domain: string;
-    tunnelToken: pulumi.Output<string>;
-    openaiApiKey: string;
-}
+export type { LiteLLMProxyConfig, LiteLLMProxyOutputs };
 
-export interface LiteLLMOutputs {
-    deployment: k8s.apps.v1.Deployment;
-    service: k8s.core.v1.Service;
-    secret: k8s.core.v1.Secret;
-    configMap: k8s.core.v1.ConfigMap;
-    tunnelDeployment: k8s.apps.v1.Deployment;
-}
-
-export function deployLiteLLM(
-    config: LiteLLMConfig,
+export function deployLiteLLMProxy(
+    config: LiteLLMProxyConfig,
     provider: k8s.Provider,
     masterKey: string,
     saltKey: string,
     postgresPassword: string
-): LiteLLMOutputs {
+): LiteLLMProxyOutputs {
     const ns = config.namespace.metadata.name;
     const appName = "litellm";
 
@@ -36,7 +24,7 @@ export function deployLiteLLM(
             stringData: {
                 "master-key": masterKey,
                 "salt-key": saltKey,
-                "openai-api-key": config.openaiApiKey,
+                "openai-api-key": config.apiKeys.openai,
             },
         },
         { provider, dependsOn: [config.namespace] }
@@ -47,28 +35,7 @@ export function deployLiteLLM(
         {
             metadata: { name: `${appName}-config`, namespace: ns },
             data: {
-                "config.yaml": `model_list:
-  - model_name: gpt-4o
-    litellm_params:
-      model: openai/gpt-4o
-      api_key: os.environ/OPENAI_API_KEY
-  - model_name: gpt-4o-mini
-    litellm_params:
-      model: openai/gpt-4o-mini
-      api_key: os.environ/OPENAI_API_KEY
-  - model_name: gpt-4-turbo
-    litellm_params:
-      model: openai/gpt-4-turbo
-      api_key: os.environ/OPENAI_API_KEY
-  - model_name: gpt-3.5-turbo
-    litellm_params:
-      model: openai/gpt-3.5-turbo
-      api_key: os.environ/OPENAI_API_KEY
-
-general_settings:
-  master_key: os.environ/LITELLM_MASTER_KEY
-  database_url: os.environ/DATABASE_URL
-`,
+                "config.yaml": generateConfigYaml(),
             },
         },
         { provider, dependsOn: [config.namespace] }

@@ -1,17 +1,8 @@
 import * as k8s from "@pulumi/kubernetes";
-import * as images from "../image-versions-manifest.json";
+import * as images from "../../image-versions-manifest.json";
+import type { LiteLLMPostgresConfig, LiteLLMPostgresOutputs } from "./types";
 
-export interface LiteLLMPostgresConfig {
-    namespace: k8s.core.v1.Namespace;
-}
-
-export interface LiteLLMPostgresOutputs {
-    deployment: k8s.apps.v1.Deployment;
-    service: k8s.core.v1.Service;
-    secret: k8s.core.v1.Secret;
-    pvc: k8s.core.v1.PersistentVolumeClaim;
-    serviceName: string;
-}
+export type { LiteLLMPostgresConfig, LiteLLMPostgresOutputs };
 
 export function deployLiteLLMPostgres(
     config: LiteLLMPostgresConfig,

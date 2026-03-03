@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
 import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust, createLiteLLMZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployLiteLLMPostgres, deployLiteLLM } from "./kubernetes";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployLiteLLMPostgres, deployLiteLLMProxy } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -212,13 +212,15 @@ const litellmTunnel = createTunnel({
     provider: cloudflareProvider,
 });
 
-const litellm = deployLiteLLM(
+const litellm = deployLiteLLMProxy(
     {
         namespace: namespaces.litellm,
         postgresServiceName: litellmPostgres.serviceName,
         domain: secrets.litellm_domain,
         tunnelToken: litellmTunnel.tunnelToken,
-        openaiApiKey: secrets.openai_api_key,
+        apiKeys: {
+            openai: secrets.openai_api_key,
+        },
     },
     k8sProvider,
     secrets.litellm_master_key,
