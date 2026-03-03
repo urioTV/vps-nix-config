@@ -7,7 +7,9 @@ export interface LiteLLMProxyConfig {
     domain: string;
     tunnelToken: pulumi.Output<string>;
     apiKeys: {
-        openai: string;
+        openrouter: string;
+        nanogpt: string;
+        glm: string;
     };
 }
 

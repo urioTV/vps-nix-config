@@ -219,7 +219,9 @@ const litellm = deployLiteLLMProxy(
         domain: secrets.litellm_domain,
         tunnelToken: litellmTunnel.tunnelToken,
         apiKeys: {
-            openai: secrets.openai_api_key,
+            openrouter: secrets.openrouter_api_key,
+            nanogpt: secrets.nanogpt_api_key,
+            glm: secrets.glm_api_key,
         },
     },
     k8sProvider,
