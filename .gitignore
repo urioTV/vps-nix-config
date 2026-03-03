@@ -22,8 +22,14 @@ tmp/
 
 # Secrets
 .env
-secrets/*.dec.yaml
-secrets/*.decrypted.yaml
+
+# SOPS decrypted temp files (all formats, all directories)
+**/.decrypted~*
+**/decrypted~*
+**/*.decrypted.*
+**/*.dec.*
+**/.sops-*.yaml
+**/.sops-*.json
 
 
 # Terraform
@@ -34,7 +40,7 @@ secrets/*.decrypted.yaml
 *.tfvars.json
 .terraform.lock.hcl
 
-# Encrypted/Decrypted Secret leftovers
+# Secret leftovers
 secret.tmp.yaml
 kubeconfig
 
