@@ -8,12 +8,14 @@ export interface LiteLLMConfig {
     postgresServiceName: string;
     domain: string;
     tunnelToken: pulumi.Output<string>;
+    openaiApiKey: string;
 }
 
 export interface LiteLLMOutputs {
     deployment: k8s.apps.v1.Deployment;
     service: k8s.core.v1.Service;
     secret: k8s.core.v1.Secret;
+    configMap: k8s.core.v1.ConfigMap;
     tunnelDeployment: k8s.apps.v1.Deployment;
 }
 
@@ -34,6 +36,39 @@ export function deployLiteLLM(
             stringData: {
                 "master-key": masterKey,
                 "salt-key": saltKey,
+                "openai-api-key": config.openaiApiKey,
+            },
+        },
+        { provider, dependsOn: [config.namespace] }
+    );
+
+    const configMap = new k8s.core.v1.ConfigMap(
+        `${appName}-config`,
+        {
+            metadata: { name: `${appName}-config`, namespace: ns },
+            data: {
+                "config.yaml": `model_list:
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: gpt-4-turbo
+    litellm_params:
+      model: openai/gpt-4-turbo
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: gpt-3.5-turbo
+    litellm_params:
+      model: openai/gpt-3.5-turbo
+      api_key: os.environ/OPENAI_API_KEY
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_url: os.environ/DATABASE_URL
+`,
             },
         },
         { provider, dependsOn: [config.namespace] }
@@ -54,6 +89,7 @@ export function deployLiteLLM(
                         containers: [{
                             name: "litellm",
                             image: `${images.litellm.image}:${images.litellm.tag}`,
+                            args: ["--config", "/app/config.yaml"],
                             env: [
                                 { name: "DATABASE_URL", value: databaseUrl },
                                 {
@@ -64,9 +100,16 @@ export function deployLiteLLM(
                                     name: "LITELLM_SALT_KEY",
                                     valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "salt-key" } },
                                 },
-                                { name: "STORE_MODEL_IN_DB", value: "True" },
+                                {
+                                    name: "OPENAI_API_KEY",
+                                    valueFrom: { secretKeyRef: { name: `${appName}-secrets`, key: "openai-api-key" } },
+                                },
+                                { name: "DISABLE_ADMIN_UI", value: "True" },
                             ],
                             ports: [{ containerPort: 4000 }],
+                            volumeMounts: [
+                                { name: "config", mountPath: "/app/config.yaml", subPath: "config.yaml" },
+                            ],
                             resources: {
                                 requests: { cpu: "100m", memory: "512Mi" },
                                 limits: { cpu: "1000m", memory: "1Gi" },
@@ -82,6 +125,9 @@ export function deployLiteLLM(
                                 periodSeconds: 30,
                             },
                         }],
+                        volumes: [
+                            { name: "config", configMap: { name: `${appName}-config` } },
+                        ],
                     },
                 },
             },
@@ -145,5 +191,5 @@ export function deployLiteLLM(
         { provider, dependsOn: [tunnelSecret] }
     );
 
-    return { deployment, service, secret, tunnelDeployment };
+    return { deployment, service, secret, configMap, tunnelDeployment };
 }

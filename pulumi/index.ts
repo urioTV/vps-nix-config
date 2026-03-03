@@ -218,6 +218,7 @@ const litellm = deployLiteLLM(
         postgresServiceName: litellmPostgres.serviceName,
         domain: secrets.litellm_domain,
         tunnelToken: litellmTunnel.tunnelToken,
+        openaiApiKey: secrets.openai_api_key,
     },
     k8sProvider,
     secrets.litellm_master_key,
