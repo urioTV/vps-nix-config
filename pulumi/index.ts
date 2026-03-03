@@ -2,8 +2,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createOpenclawZeroTrust, createPerplexicaZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployOpenclaw, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust } from "./cloudflare";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployLiteLLMPostgres, deployLiteLLM } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -67,25 +67,6 @@ const grafanaTunnel = createTunnel({
 createGrafanaZeroTrust({
     accountId: secrets.cloudflare_account_id,
     domainName: secrets.grafana_domain,
-    adminEmail: secrets.aiostreams_admin_email,
-    provider: cloudflareProvider,
-});
-
-// Create Cloudflare Tunnel for OpenClaw
-const openclawTunnel = createTunnel({
-    accountId: secrets.cloudflare_account_id,
-    zoneId: secrets.cloudflare_zone_id,
-    tunnelName: "openclaw-k8s",
-    domainName: secrets.openclaw_domain,
-    dnsRecordName: secrets.openclaw_domain.split(".")[0],
-    serviceUrl: "http://10.43.200.210:18789",
-    provider: cloudflareProvider,
-});
-
-// Create Zero Trust Access for OpenClaw
-createOpenclawZeroTrust({
-    accountId: secrets.cloudflare_account_id,
-    domainName: secrets.openclaw_domain,
     adminEmail: secrets.aiostreams_admin_email,
     provider: cloudflareProvider,
 });
@@ -175,17 +156,6 @@ const monitoringOps = deployMonitoring(
     k8sProvider
 );
 
-deployOpenclaw(
-    {
-        namespace: namespaces.openclaw,
-        tunnelToken: openclawTunnel.tunnelToken,
-        domain: secrets.openclaw_domain,
-        openrouterApiKey: secrets.openrouter_api_key,
-        gatewayToken: secrets.openclaw_gateway_token,
-    },
-    k8sProvider
-);
-
 deployPerplexica(
     {
         namespace: namespaces.perplexica,
@@ -224,6 +194,25 @@ deploySyncthingDiscovery(
     k8sProvider
 );
 
+// Deploy LiteLLM PostgreSQL
+const litellmPostgres = deployLiteLLMPostgres(
+    { namespace: namespaces.litellm },
+    k8sProvider,
+    secrets.litellm_postgres_password
+);
+
+// Deploy LiteLLM (proxy + UI)
+const litellm = deployLiteLLM(
+    {
+        namespace: namespaces.litellm,
+        postgresServiceName: litellmPostgres.serviceName,
+    },
+    k8sProvider,
+    secrets.litellm_master_key,
+    secrets.litellm_salt_key,
+    secrets.litellm_postgres_password
+);
+
 
 // ============================================================================
 // Exports
@@ -233,6 +222,7 @@ export const tunnelId = tunnel.tunnelId;
 export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const grafanaUrl = monitoringOps.grafanaUrl;
-export const openclawUrl = `https://${secrets.openclaw_domain}`;
 export const perplexicaUrl = `https://${secrets.perplexica_domain}`;
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;
+export const litellmClusterIP = `http://10.43.200.207:4000`;
+export const litellmNodePort = `http://<vps-ip>:30001`;

@@ -38,5 +38,13 @@
     "syncthing-relay": {
         "image": "syncthing/relaysrv",
         "tag": "latest"
+    },
+    "litellm": {
+        "image": "ghcr.io/berriai/litellm",
+        "tag": "main-v1.81.12-stable.2"
+    },
+    "litellm-postgres": {
+        "image": "postgres",
+        "tag": "16"
     }
 }

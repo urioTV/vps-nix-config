@@ -34,17 +34,17 @@ export interface SecretsConfig {
     grafana_admin_password: string;
     grafana_domain: string;
 
-    // OpenClaw
-    openclaw_domain: string;
-    openrouter_api_key: string;
-    openclaw_gateway_token: string;
-
     // Perplexica
     perplexica_domain: string;
     perplexica_admin_email: string;
 
     // Syncthing Discovery
     syncthing_discovery_domain: string;
+
+    // LiteLLM
+    litellm_master_key: string;
+    litellm_salt_key: string;
+    litellm_postgres_password: string;
 }
 
 /**
