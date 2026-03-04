@@ -7,7 +7,7 @@ export const modelGroups: ModelGroup[] = [
         variants: [
             { provider: "zai", nameSuffix: "" },
             { provider: "nanogpt", nameSuffix: "-nano" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/z-ai/glm-5" }
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "z-ai/glm-5" }
         ]
     }),
     createModelGroup({
@@ -16,71 +16,71 @@ export const modelGroups: ModelGroup[] = [
         variants: [
             { provider: "zai", nameSuffix: "", timeout: 120 },
             { provider: "nanogpt", nameSuffix: "-nano" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/z-ai/glm-4.7" }
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "z-ai/glm-4.7" }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-397b",
         title: "Qwen3.5-397b",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-397b-a17b" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-397b-a17b", extraBody: { include_reasoning: false } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-397b-a17b" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-397b-a17b", extraBody: { include_reasoning: false } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-397b-thinking",
         title: "Qwen3.5-397b-thinking",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-397b-a17b:thinking" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-397b-a17b", extraBody: { include_reasoning: true } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-397b-a17b:thinking" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-397b-a17b", extraBody: { include_reasoning: true } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-122b",
         title: "Qwen3.5-122b",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-122b-a10b" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-122b-a10b", extraBody: { include_reasoning: false } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-122b-a10b" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-122b-a10b", extraBody: { include_reasoning: false } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-122b-thinking",
         title: "Qwen3.5-122b-thinking",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-122b-a10b:thinking" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-122b-a10b", extraBody: { include_reasoning: true } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-122b-a10b:thinking" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-122b-a10b", extraBody: { include_reasoning: true } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-35b",
         title: "Qwen3.5-35b",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-35b-a3b" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-35b-a3b", extraBody: { include_reasoning: false } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-35b-a3b" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-35b-a3b", extraBody: { include_reasoning: false } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-35b-thinking",
         title: "Qwen3.5-35b-thinking",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-35b-a3b:thinking" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-35b-a3b", extraBody: { include_reasoning: true } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-35b-a3b:thinking" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-35b-a3b", extraBody: { include_reasoning: true } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-27b",
         title: "Qwen3.5-27b",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-27b" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-27b", extraBody: { include_reasoning: false } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-27b" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-27b", extraBody: { include_reasoning: false } }
         ]
     }),
     createModelGroup({
         baseName: "qwen3.5-27b-thinking",
         title: "Qwen3.5-27b-thinking",
         variants: [
-            { provider: "nanogpt", nameSuffix: "", modelOverride: "openai/qwen3.5-27b:thinking" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/qwen/qwen3.5-27b", extraBody: { include_reasoning: true } }
+            { provider: "nanogpt", nameSuffix: "", modelOverride: "qwen3.5-27b:thinking" },
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "qwen/qwen3.5-27b", extraBody: { include_reasoning: true } }
         ]
     }),
     createModelGroup({
@@ -88,7 +88,7 @@ export const modelGroups: ModelGroup[] = [
         title: "MiniMax M2.5",
         variants: [
             { provider: "nanogpt", nameSuffix: "" },
-            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openrouter/minimax/minimax-m2.5" }
+            { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "minimax/minimax-m2.5" }
         ]
     })
 ];

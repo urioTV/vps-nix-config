@@ -63,7 +63,7 @@ export function createModelGroup(config: ModelGroupConfig): ModelGroup {
             throw new Error(`Unknown provider: ${variantConfig.provider}`);
         }
 
-        const modelString = variantConfig.modelOverride || providerDef.modelTemplate(baseName);
+        const modelString = providerDef.modelTemplate(variantConfig.modelOverride ?? baseName);
 
         const variant: ModelVariant = {
             nameSuffix: variantConfig.nameSuffix,
