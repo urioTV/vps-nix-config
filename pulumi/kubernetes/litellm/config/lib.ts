@@ -1,58 +1,5 @@
-export interface ModelVariant {
-    nameSuffix: string;
-    model: string;
-    apiKeyEnvVar: string;
-    apiBase?: string;
-    timeout?: number;
-    extraBody?: Record<string, any>;
-}
-
-export interface ModelGroup {
-    baseName: string;
-    title: string;
-    variants: ModelVariant[];
-}
-
-export interface ProviderConfig {
-    name: string;
-    apiKeyEnvVar: string;
-    modelTemplate: (model: string) => string;
-    apiBase?: string;
-}
-
-export const providers: Record<string, ProviderConfig> = {
-    zai: {
-        name: "zai",
-        apiKeyEnvVar: "ZAI_API_KEY",
-        modelTemplate: (model) => `zai/${model}`,
-        apiBase: "https://api.z.ai/api/coding/paas/v4"
-    },
-    nanogpt: {
-        name: "nanogpt",
-        apiKeyEnvVar: "NANOGPT_API_KEY",
-        modelTemplate: (model) => `openai/${model}`,
-        apiBase: "https://nano-gpt.com/api/v1"
-    },
-    openrouter: {
-        name: "openrouter",
-        apiKeyEnvVar: "OPENROUTER_API_KEY",
-        modelTemplate: (model) => `openrouter/${model}`
-    }
-};
-
-export interface ModelVariantConfig {
-    provider: string;
-    nameSuffix: string;
-    modelOverride?: string;
-    timeout?: number;
-    extraBody?: Record<string, any>;
-}
-
-export interface ModelGroupConfig {
-    baseName: string;
-    title: string;
-    variants: ModelVariantConfig[];
-}
+import { ModelVariant, ModelGroup, ModelGroupConfig } from "./types";
+import { providers } from "./providers";
 
 export function createModelGroup(config: ModelGroupConfig): ModelGroup {
     const { baseName, title, variants } = config;
@@ -83,9 +30,5 @@ export function createModelGroup(config: ModelGroupConfig): ModelGroup {
         return variant;
     });
 
-    return {
-        baseName,
-        title,
-        variants: builtVariants
-    };
+    return { baseName, title, variants: builtVariants };
 }

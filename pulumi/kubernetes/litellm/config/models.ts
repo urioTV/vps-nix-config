@@ -1,4 +1,5 @@
-import { ModelGroup, createModelGroup } from "./lib";
+import { ModelGroup } from "./types";
+import { createModelGroup } from "./lib";
 
 export const modelGroups: ModelGroup[] = [
     createModelGroup({
