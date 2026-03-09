@@ -10,7 +10,6 @@ export function createNamespaces(provider: k8s.Provider) {
         "aiostreams",
         "byparr",
         "jackett",
-        "litellm",
         "minio",
         "monitoring",
         "perplexica",

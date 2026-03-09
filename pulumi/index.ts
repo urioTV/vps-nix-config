@@ -2,8 +2,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust, createLiteLLMZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployLiteLLMPostgres, deployLiteLLMProxy } from "./kubernetes";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust } from "./cloudflare";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -194,41 +194,6 @@ deploySyncthingDiscovery(
     k8sProvider
 );
 
-// Deploy LiteLLM PostgreSQL
-const litellmPostgres = deployLiteLLMPostgres(
-    { namespace: namespaces.litellm },
-    k8sProvider,
-    secrets.litellm_postgres_password
-);
-
-// Deploy LiteLLM (proxy + UI)
-const litellmTunnel = createTunnel({
-    accountId: secrets.cloudflare_account_id,
-    zoneId: secrets.cloudflare_zone_id,
-    tunnelName: "litellm-k8s",
-    domainName: secrets.litellm_domain,
-    dnsRecordName: secrets.litellm_domain.split(".")[0],
-    serviceUrl: `http://10.43.200.207:4000`,
-    provider: cloudflareProvider,
-});
-
-const litellm = deployLiteLLMProxy(
-    {
-        namespace: namespaces.litellm,
-        postgresServiceName: litellmPostgres.serviceName,
-        domain: secrets.litellm_domain,
-        tunnelToken: litellmTunnel.tunnelToken,
-        apiKeys: {
-            zai: secrets.zai_api_key,
-            nanogpt: secrets.nanogpt_api_key,
-            openrouter: secrets.openrouter_api_key,
-        },
-    },
-    k8sProvider,
-    secrets.litellm_master_key,
-    secrets.litellm_salt_key,
-    secrets.litellm_postgres_password
-);
 
 
 // ============================================================================
@@ -241,4 +206,3 @@ export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const grafanaUrl = monitoringOps.grafanaUrl;
 export const perplexicaUrl = `https://${secrets.perplexica_domain}`;
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;
-export const litellmUrl = `https://${secrets.litellm_domain}`;

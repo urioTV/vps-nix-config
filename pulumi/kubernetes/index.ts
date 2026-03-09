@@ -12,4 +12,3 @@ export { deploySyncthing, SyncthingConfig } from "./syncthing";
 export { deployPerplexica, PerplexicaConfig } from "./perplexica";
 export { deploySyncthingDiscovery, SyncthingDiscoveryConfig } from "./syncthing-discovery";
 export { deployCertManager, CertManagerConfig } from "./cert-manager";
-export { deployLiteLLMPostgres, deployLiteLLMProxy, LiteLLMProxyConfig, LiteLLMProxyOutputs, LiteLLMPostgresConfig, LiteLLMPostgresOutputs } from "./litellm";

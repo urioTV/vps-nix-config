@@ -40,15 +40,6 @@ export interface SecretsConfig {
 
     // Syncthing Discovery
     syncthing_discovery_domain: string;
-
-    // LiteLLM
-    litellm_master_key: string;
-    litellm_salt_key: string;
-    litellm_postgres_password: string;
-    litellm_domain: string;
-    zai_api_key: string;
-    nanogpt_api_key: string;
-    openrouter_api_key: string;
 }
 
 /**
