@@ -1,0 +1,2 @@
+- Added pulumi/kubernetes/openclaw.ts: Helm OCI operator + OpenClawInstance CR + separate cloudflared Deployment; followed monitoring.ts patterns (repositoryOpts, cloudflared image).
+- No TypeScript errors after adding files (lsp diagnostics OK; bun tsc attempted earlier).

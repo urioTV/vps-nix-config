@@ -1,0 +1,1 @@
+- Issue: some functions.bash calls with workdir to pulumi/ returned 'no such file or directory' due to tool workdir handling; file reads used absolute paths and succeeded.

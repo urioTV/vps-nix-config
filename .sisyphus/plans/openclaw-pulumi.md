@@ -136,7 +136,7 @@ Max Concurrent: 2 (Wave 2)
 
 ## TODOs
 
-- [ ] 1. Aktualizacja core configs (namespaces, networking, sops)
+- [x] 1. Aktualizacja core configs (namespaces, networking, sops)
 
   **What to do**:
   - Dodaj `"openclaw"` do listy namespaców w `pulumi/kubernetes/namespaces.ts` — śledź istniejący wzorzec (`k8s.core.v1.Namespace`)

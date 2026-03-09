@@ -1,10 +1,10 @@
 {
-  "active_plan": "/Users/urio/Projects/vps-nix-config/.sisyphus/plans/litellm-deployment.md",
-  "started_at": "2026-03-03T15:03:36.345Z",
+  "active_plan": "/Users/urio/Projects/vps-nix-config/.sisyphus/plans/openclaw-pulumi.md",
+  "started_at": "2026-03-09T08:42:59.602Z",
   "session_ids": [
-    "ses_34be7c2f6ffeMSt1WVE2PZeul7"
+    "ses_32e4e1c61ffedHyOiMsi13fbNQ"
   ],
-  "plan_name": "litellm-deployment",
+  "plan_name": "openclaw-pulumi",
   "agent": "atlas",
   "worktree_path": "/Users/urio/Projects/vps-nix-config"
 }
