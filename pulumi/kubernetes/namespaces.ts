@@ -12,6 +12,7 @@ export function createNamespaces(provider: k8s.Provider) {
         "jackett",
         "minio",
         "monitoring",
+        "openclaw",
         "perplexica",
         "syncthing",
         "syncthing-relay",

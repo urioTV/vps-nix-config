@@ -12,6 +12,7 @@ export const serviceIPs = {
     syncthing: "10.43.200.204",
     "syncthing-relay": "10.43.200.205",
     "syncthing-discovery": "10.43.200.206",
+    openclaw: "10.43.200.207",
     // Add new services here as needed
 } as const;
 

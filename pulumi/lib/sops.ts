@@ -40,6 +40,8 @@ export interface SecretsConfig {
 
     // Syncthing Discovery
     syncthing_discovery_domain: string;
+    openclaw_domain: string;
+    openclaw_cf_access_policy_email?: string;
 }
 
 /**
