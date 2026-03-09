@@ -4,23 +4,22 @@ import * as pulumi from "@pulumi/pulumi";
 export interface OpenclawZeroTrustConfig {
     accountId: string;
     domainName: string;
-    adminEmail: string;
+    adminEmail?: string;
     provider: cloudflare.Provider;
 }
 
 export function createOpenclawZeroTrust(config: OpenclawZeroTrustConfig) {
     const opts = { provider: config.provider };
 
-    // Allow policy for admin email
+    const includes = config.adminEmail
+        ? [{ email: { email: config.adminEmail } }]
+        : [{ everyone: {} }];
+
     const policy = new cloudflare.ZeroTrustAccessPolicy("openclaw-policy", {
         accountId: config.accountId,
         name: "Openclaw Access Policy",
         decision: "allow",
-        includes: [
-            {
-                email: { email: config.adminEmail },
-            },
-        ],
+        includes,
     }, opts);
 
     // Openclaw application
