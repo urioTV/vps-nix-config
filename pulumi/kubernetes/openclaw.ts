@@ -8,6 +8,7 @@ import { serviceIPs } from "./networking";
 export interface OpenclawConfig {
   namespace: k8s.core.v1.Namespace;
   tunnelToken: pulumi.Output<string>;
+  domain: string;
 }
 
 export interface OpenclawOutputs {
@@ -37,6 +38,14 @@ export function deployOpenclaw(
     spec: {
       config: {
         mergeMode: "merge",
+        raw: {
+          gateway: {
+            controlUi: {
+              allowedOrigins: [`https://${config.domain}`],
+            },
+            trustedProxies: ["127.0.0.1"],
+          },
+        },
       },
       // intentionally no selfConfigure
     },

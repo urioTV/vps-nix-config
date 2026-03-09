@@ -218,6 +218,7 @@ deployOpenclaw(
     {
         namespace: namespaces.openclaw,
         tunnelToken: openclawTunnel.tunnelToken,
+        domain: secrets.openclaw_domain,
     },
     k8sProvider
 );
