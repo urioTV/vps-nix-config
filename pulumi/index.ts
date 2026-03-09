@@ -97,7 +97,7 @@ const openclawTunnel = createTunnel({
     tunnelName: "openclaw-k8s",
     domainName: secrets.openclaw_domain,
     dnsRecordName: secrets.openclaw_domain.split(".")[0],
-    serviceUrl: "http://10.43.200.207:18789",
+    serviceUrl: "http://openclaw.openclaw.svc.cluster.local:18789",
     provider: cloudflareProvider,
 });
 
