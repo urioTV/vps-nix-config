@@ -42,6 +42,8 @@ export function deployOpenclaw(
           gateway: {
             controlUi: {
               allowedOrigins: [`https://${config.domain}`],
+              dangerouslyDisableDeviceAuth: true,
+              allowInsecureAuth: true,
             },
             trustedProxies: ["127.0.0.1"],
           },
