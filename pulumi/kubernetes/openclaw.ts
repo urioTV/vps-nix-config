@@ -22,9 +22,8 @@ export function deployOpenclaw(
 
   // 1. Helm Release — operator (CRD + controller)
   const operatorRelease = new k8s.helm.v3.Release("openclaw-operator", {
-    chart: "openclaw-operator",
+    chart: "oci://ghcr.io/openclaw-rocks/charts/openclaw-operator",
     version: images["openclaw-operator"].tag,
-    repositoryOpts: { repo: "oci://ghcr.io/openclaw-rocks/charts" },
     name: "openclaw-operator",
     namespace: ns,
     createNamespace: false,
@@ -38,11 +37,6 @@ export function deployOpenclaw(
     spec: {
       config: {
         mergeMode: "merge",
-        raw: JSON.stringify({
-          gateway: {
-            allowedOrigins: ["*"],
-          },
-        }),
       },
       // intentionally no selfConfigure
     },
