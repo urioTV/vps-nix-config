@@ -3,7 +3,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as images from "../image-versions-manifest.json";
 import { serviceIPs } from "./networking";
 
-const OPENCLAW_OPERATOR_VERSION = "0.10.25";
+
 
 export interface OpenclawConfig {
   namespace: k8s.core.v1.Namespace;
@@ -23,7 +23,7 @@ export function deployOpenclaw(
   // 1. Helm Release — operator (CRD + controller)
   const operatorRelease = new k8s.helm.v3.Release("openclaw-operator", {
     chart: "openclaw-operator",
-    version: OPENCLAW_OPERATOR_VERSION,
+    version: images["openclaw-operator"].tag,
     repositoryOpts: { repo: "oci://ghcr.io/openclaw-rocks/charts" },
     name: "openclaw-operator",
     namespace: ns,
