@@ -2,7 +2,7 @@
 # Deploy infrastructure via Pulumi
 set -e
 
-cd "$(dirname "$0")/pulumi"
+cd "$(dirname "$0")/../pulumi"
 
 echo "🚀 Deploying infrastructure with Pulumi..."
 echo ""
