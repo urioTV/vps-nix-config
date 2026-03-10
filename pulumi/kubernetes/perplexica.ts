@@ -69,13 +69,13 @@ export function deployPerplexica(
                                 image: `${images.perplexica.image}:${images.perplexica.tag}`,
                                 env: [
                                     { name: "SEARXNG_API_URL", value: "http://127.0.0.1:8080" },
-                                    { name: "DATA_DIR", value: "/home/perplexica" },
+                                    { name: "DATA_DIR", value: "/home/vane" },
                                 ],
                                 ports: [{ containerPort: 3000 }],
                                 volumeMounts: [
                                     {
                                         name: "data",
-                                        mountPath: "/home/perplexica/data",
+                                        mountPath: "/home/vane/data",
                                     },
                                 ],
                             },

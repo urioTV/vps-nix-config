@@ -219,6 +219,10 @@ deployOpenclaw(
         namespace: namespaces.openclaw,
         tunnelToken: openclawTunnel.tunnelToken,
         domain: secrets.openclaw_domain,
+        zaiApiKey: secrets.zai_api_key,
+        nanogptApiKey: secrets.nanogpt_api_key,
+        openrouterApiKey: secrets.openrouter_api_key,
+        gatewayToken: secrets.openclaw_gateway_token,
     },
     k8sProvider
 );
