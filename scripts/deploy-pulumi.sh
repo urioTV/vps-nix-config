@@ -13,11 +13,8 @@ if ! pulumi whoami &>/dev/null; then
     exit 1
 fi
 
-# Select the vps-ovh stack (create if doesn't exist)
-if ! pulumi stack select vps-ovh 2>/dev/null; then
-    echo "📦 Creating vps-ovh stack..."
-    pulumi stack init vps-ovh
-fi
+# Select the urioTV/vps-ovh stack
+pulumi stack select urioTV/vps-ovh
 
 # Run Pulumi up
 pulumi up
