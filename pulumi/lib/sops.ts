@@ -48,6 +48,10 @@ export interface SecretsConfig {
     nanogpt_api_key: string;
     openrouter_api_key: string;
     openclaw_gateway_token: string;
+
+    // Bifrost
+    bifrost_domain: string;
+    bifrost_admin_email: string;
 }
 
 /**

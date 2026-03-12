@@ -2,8 +2,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust, createOpenclawZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployOpenclaw, OpenclawConfig } from "./kubernetes";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust, createOpenclawZeroTrust, createBifrostZeroTrust } from "./cloudflare";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployOpenclaw, deployCliProxyApi, OpenclawConfig, deployBifrost } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -106,6 +106,25 @@ createOpenclawZeroTrust({
     accountId: secrets.cloudflare_account_id,
     domainName: secrets.openclaw_domain,
     adminEmail: secrets.openclaw_cf_access_policy_email,
+    provider: cloudflareProvider,
+});
+
+// Create Cloudflare Tunnel for Bifrost
+const bifrostTunnel = createTunnel({
+    accountId: secrets.cloudflare_account_id,
+    zoneId: secrets.cloudflare_zone_id,
+    tunnelName: "bifrost-k8s",
+    domainName: secrets.bifrost_domain,
+    dnsRecordName: secrets.bifrost_domain.split(".")[0],
+    serviceUrl: "http://10.43.200.209:8080", // Bifrost static ClusterIP
+    provider: cloudflareProvider,
+});
+
+// Create Zero Trust Access for Bifrost
+createBifrostZeroTrust({
+    accountId: secrets.cloudflare_account_id,
+    domainName: secrets.bifrost_domain,
+    adminEmail: secrets.bifrost_admin_email,
     provider: cloudflareProvider,
 });
 
@@ -213,6 +232,12 @@ deploySyncthingDiscovery(
     k8sProvider
 );
 
+// Deploy CLIProxyAPIPlus
+deployCliProxyApi(
+    { namespace: namespaces["cli-proxy-api"] },
+    k8sProvider
+);
+
 // Deploy Openclaw (AI agent platform with operator)
 deployOpenclaw(
     {
@@ -224,6 +249,12 @@ deployOpenclaw(
         openrouterApiKey: secrets.openrouter_api_key,
         gatewayToken: secrets.openclaw_gateway_token,
     },
+    k8sProvider
+);
+
+// Deploy Bifrost
+deployBifrost(
+    { namespace: namespaces.bifrost },
     k8sProvider
 );
 

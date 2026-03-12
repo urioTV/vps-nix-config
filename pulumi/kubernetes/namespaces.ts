@@ -6,6 +6,7 @@ import * as k8s from "@pulumi/kubernetes";
 export function createNamespaces(provider: k8s.Provider) {
     const namespaces = [
         "cert-manager",
+        "bifrost",
         "aiometadata",
         "aiostreams",
         "byparr",
@@ -16,6 +17,7 @@ export function createNamespaces(provider: k8s.Provider) {
         "perplexica",
         "syncthing",
         "syncthing-relay",
+        "cli-proxy-api",
     ];
 
     const nsResources: Record<string, k8s.core.v1.Namespace> = {};
