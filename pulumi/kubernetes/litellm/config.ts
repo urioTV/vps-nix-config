@@ -42,6 +42,11 @@ const providers: Record<string, { apiKeyEnvVar?: string; apiKey?: string; modelP
         apiKey: "google",
         modelPrefix: "openai/",
         apiBase: "http://cli-proxy-api.cli-proxy-api.svc.cluster.local:8317/v1"
+    },
+    "cli-antigravity": {
+        apiKey: "antigravity",
+        modelPrefix: "openai/",
+        apiBase: "http://cli-proxy-api.cli-proxy-api.svc.cluster.local:8317/v1"
     }
 };
 
@@ -184,6 +189,27 @@ export const modelGroups: ModelGroup[] = [
     createGroup("gemini-3-flash-preview", "Gemini 3 Flash Preview", [
         { provider: "cli-google", nameSuffix: "", modelOverride: "gemini-3-flash-preview" },
         { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "google/gemini-3-flash-preview" }
+    ]),
+    // ------------------------------------------------------------------------
+    // ANTIGRAVITY FAMILY (exclusive models via CLI proxy)
+    // ------------------------------------------------------------------------
+    createGroup("antigravity-claude-opus-4-6-thinking", "Claude Opus 4.6 Thinking", [
+        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "claude-opus-4-6-thinking" }
+    ]),
+    createGroup("antigravity-claude-sonnet-4-6", "Claude Sonnet 4.6", [
+        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "claude-sonnet-4-6" }
+    ]),
+    createGroup("antigravity-gemini-3-flash", "Gemini 3 Flash", [
+        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3-flash" }
+    ]),
+    createGroup("antigravity-gemini-3.1-pro-high", "Gemini 3.1 Pro High", [
+        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3.1-pro-high" }
+    ]),
+    createGroup("antigravity-gemini-3.1-pro-low", "Gemini 3.1 Pro Low", [
+        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3.1-pro-low" }
+    ]),
+    createGroup("antigravity-gemini-3.1-flash-image", "Gemini 3.1 Flash Image", [
+        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3.1-flash-image" }
     ])
 ];
 
@@ -202,7 +228,7 @@ export function generateConfigYaml(): string {
             yamlStr += `  - model_name: ${group.baseName}${variant.nameSuffix}\n`;
             yamlStr += `    litellm_params:\n`;
             yamlStr += `      model: ${variant.modelOverride}\n`;
-            
+
             if (variant.apiKeyEnvVar) {
                 yamlStr += `      api_key: "os.environ/${variant.apiKeyEnvVar}"\n`;
             } else if (variant.apiKey) {
@@ -210,7 +236,7 @@ export function generateConfigYaml(): string {
             } else {
                 yamlStr += `      api_key: "sk-dummy"\n`;
             }
-            
+
             if (variant.apiBase) yamlStr += `      api_base: "${variant.apiBase}"\n`;
             if (variant.timeout) yamlStr += `      timeout: ${variant.timeout}\n`;
             if (variant.extraBody) {

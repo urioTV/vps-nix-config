@@ -145,6 +145,11 @@ export function deployLiteLLMProxy(
 
     const databaseUrl = pulumi.interpolate`postgresql://llmproxy:${postgresPassword}@${config.postgresServiceName}:5432/litellm`;
 
+    const configHash = pulumi.interpolate`${configMap.data["config.yaml"]}`.apply(cfg => {
+        const crypto = require('crypto');
+        return crypto.createHash('sha256').update(cfg).digest('hex').substring(0, 16);
+    });
+
     const deployment = new k8s.apps.v1.Deployment(
         appName,
         {
@@ -153,7 +158,10 @@ export function deployLiteLLMProxy(
                 replicas: 1,
                 selector: { matchLabels: { app: appName } },
                 template: {
-                    metadata: { labels: { app: appName } },
+                    metadata: {
+                        labels: { app: appName },
+                        annotations: { "config-hash": configHash }
+                    },
                     spec: {
                         containers: [{
                             name: "litellm",
@@ -209,7 +217,7 @@ export function deployLiteLLMProxy(
                 },
             },
         },
-        { provider, dependsOn: [config.namespace, secret] }
+        { provider, dependsOn: [config.namespace, secret, configMap] }
     );
 
     const service = new k8s.core.v1.Service(
