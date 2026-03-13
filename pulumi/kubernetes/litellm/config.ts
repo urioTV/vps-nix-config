@@ -117,58 +117,73 @@ export const modelGroups: ModelGroup[] = [
         { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "minimax/minimax-m2.5" }
     ]),
     // ------------------------------------------------------------------------
-    // CLAUDE FAMILY (GitHub Copilot)
+    // CLAUDE FAMILY (GitHub Copilot -> OpenRouter fallback)
     // ------------------------------------------------------------------------
     createGroup("claude-opus-4.6", "Claude Opus 4.6", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-opus-4.6" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-opus-4.6" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "anthropic/claude-opus-4.6" }
     ]),
     createGroup("claude-opus-4.6-fast", "Claude Opus 4.6 Fast", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-opus-4.6-fast" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-opus-4.6-fast" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "anthropic/claude-opus-4.6" }
     ]),
     createGroup("claude-sonnet-4.6", "Claude Sonnet 4.6", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-sonnet-4.6" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-sonnet-4.6" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "anthropic/claude-sonnet-4.6" }
     ]),
     createGroup("claude-haiku-4.5", "Claude Haiku 4.5", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-haiku-4.5" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "claude-haiku-4.5" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "anthropic/claude-haiku-4.5" }
     ]),
     // ------------------------------------------------------------------------
-    // GPT-5 FAMILY (GitHub Copilot)
+    // GPT-5 FAMILY (GitHub Copilot -> OpenRouter fallback)
     // ------------------------------------------------------------------------
     createGroup("gpt-5.4", "GPT 5.4", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.4" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.4" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.4" }
     ]),
     createGroup("gpt-5.3-codex", "GPT 5.3 Codex", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.3-codex" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.3-codex" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.3-codex" }
     ]),
     createGroup("gpt-5.2", "GPT 5.2", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.2" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.2" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.2" }
     ]),
     createGroup("gpt-5.2-codex", "GPT 5.2 Codex", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.2-codex" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.2-codex" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.2-codex" }
     ]),
     createGroup("gpt-5.1", "GPT 5.1", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.1" }
     ]),
     createGroup("gpt-5.1-codex", "GPT 5.1 Codex", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1-codex" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1-codex" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.1-codex" }
     ]),
     createGroup("gpt-5.1-codex-max", "GPT 5.1 Codex Max", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1-codex-max" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1-codex-max" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.1-codex-max" }
     ]),
     createGroup("gpt-5.1-codex-mini", "GPT 5.1 Codex Mini", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1-codex-mini" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5.1-codex-mini" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5.1-codex-mini" }
     ]),
     createGroup("gpt-5-mini", "GPT 5 Mini", [
-        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5-mini" }
+        { provider: "cli-github", nameSuffix: "", modelOverride: "gpt-5-mini" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "openai/gpt-5-mini" }
     ]),
     // ------------------------------------------------------------------------
-    // GEMINI FAMILY (Google)
+    // GEMINI FAMILY (Google -> OpenRouter fallback)
     // ------------------------------------------------------------------------
     createGroup("gemini-3.1-pro-preview", "Gemini 3.1 Pro Preview", [
-        { provider: "cli-google", nameSuffix: "", modelOverride: "gemini-3.1-pro-preview" }
+        { provider: "cli-google", nameSuffix: "", modelOverride: "gemini-3.1-pro-preview" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "google/gemini-3.1-pro-preview" }
     ]),
     createGroup("gemini-3-flash-preview", "Gemini 3 Flash Preview", [
-        { provider: "cli-google", nameSuffix: "", modelOverride: "gemini-3-flash-preview" }
+        { provider: "cli-google", nameSuffix: "", modelOverride: "gemini-3-flash-preview" },
+        { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "google/gemini-3-flash-preview" }
     ])
 ];
 
