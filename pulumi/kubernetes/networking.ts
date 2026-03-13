@@ -14,7 +14,8 @@ export const serviceIPs = {
     "syncthing-discovery": "10.43.200.206",
     openclaw: "10.43.200.207",
     "cli-proxy-api": "10.43.200.208",
-    bifrost: "10.43.200.209",
+    litellm: "10.43.200.209",
+
     // Add new services here as needed
 } as const;
 

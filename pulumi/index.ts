@@ -2,8 +2,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
-import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust, createOpenclawZeroTrust, createBifrostZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployOpenclaw, deployCliProxyApi, OpenclawConfig, deployBifrost } from "./kubernetes";
+import { createTunnel, createAiostreamsZeroTrust, createGrafanaZeroTrust, createPerplexicaZeroTrust, createOpenclawZeroTrust } from "./cloudflare";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deployMonitoring, deployPerplexica, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery, deployOpenclaw, deployCliProxyApi, OpenclawConfig, deployLiteLLMPostgres, deployLiteLLMProxy } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -109,24 +109,17 @@ createOpenclawZeroTrust({
     provider: cloudflareProvider,
 });
 
-// Create Cloudflare Tunnel for Bifrost
-const bifrostTunnel = createTunnel({
+// Create Cloudflare Tunnel for LiteLLM
+const litellmTunnel = createTunnel({
     accountId: secrets.cloudflare_account_id,
     zoneId: secrets.cloudflare_zone_id,
-    tunnelName: "bifrost-k8s",
-    domainName: secrets.bifrost_domain,
-    dnsRecordName: secrets.bifrost_domain.split(".")[0],
-    serviceUrl: "http://10.43.200.209:8080", // Bifrost static ClusterIP
+    tunnelName: "litellm-k8s",
+    domainName: secrets.litellm_domain,
+    dnsRecordName: secrets.litellm_domain.split(".")[0],
+    serviceUrl: "http://litellm.litellm.svc.cluster.local:4000",
     provider: cloudflareProvider,
 });
 
-// Create Zero Trust Access for Bifrost
-createBifrostZeroTrust({
-    accountId: secrets.cloudflare_account_id,
-    domainName: secrets.bifrost_domain,
-    adminEmail: secrets.bifrost_admin_email,
-    provider: cloudflareProvider,
-});
 
 // ============================================================================
 // Kubernetes Resources
@@ -238,6 +231,7 @@ deployCliProxyApi(
     k8sProvider
 );
 
+
 // Deploy Openclaw (AI agent platform with operator)
 deployOpenclaw(
     {
@@ -252,11 +246,34 @@ deployOpenclaw(
     k8sProvider
 );
 
-// Deploy Bifrost
-deployBifrost(
-    { namespace: namespaces.bifrost },
+// Deploy LiteLLM Postgres
+deployLiteLLMPostgres(
+    {
+        namespace: namespaces.litellm,
+        postgresPassword: secrets.litellm_postgres_password,
+    },
     k8sProvider
 );
+
+// Deploy LiteLLM Proxy
+deployLiteLLMProxy(
+    {
+        namespace: namespaces.litellm,
+        tunnelToken: litellmTunnel.tunnelToken,
+        postgresServiceName: "litellm-postgres", // Name matches what is deployed in postgres.ts
+        apiKeys: {
+            zai: secrets.zai_api_key,
+            nanogpt: secrets.nanogpt_api_key,
+            openrouter: secrets.openrouter_api_key,
+        },
+    },
+    k8sProvider,
+    secrets.litellm_master_key,
+    secrets.litellm_salt_key,
+    secrets.litellm_postgres_password
+);
+
+
 
 
 
@@ -271,3 +288,6 @@ export const grafanaUrl = monitoringOps.grafanaUrl;
 export const perplexicaUrl = `https://${secrets.perplexica_domain}`;
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;
 export const openclawUrl = `https://${secrets.openclaw_domain}`;
+export const litellmUrl = `https://${secrets.litellm_domain}`;
+
+

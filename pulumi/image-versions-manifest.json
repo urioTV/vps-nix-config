@@ -41,10 +41,17 @@
     },
     "openclaw-operator": {
         "tag": "0.10.29"
-    }
-	,
+    },
     "cli-proxy-api": {
         "image": "eceasy/cli-proxy-api-plus",
         "tag": "latest"
+    },
+    "litellm": {
+        "image": "ghcr.io/berriai/litellm",
+        "tag": "main-latest"
+    },
+    "litellm-postgres": {
+        "image": "postgres",
+        "tag": "15-alpine"
     }
 }

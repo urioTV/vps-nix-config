@@ -3,4 +3,5 @@ export { createAiostreamsZeroTrust, AiostreamsZeroTrustConfig, AiostreamsZeroTru
 export { createGrafanaZeroTrust, GrafanaZeroTrustConfig, GrafanaZeroTrustOutputs } from "./zero-trust-grafana";
 export { createPerplexicaZeroTrust, PerplexicaZeroTrustConfig } from "./zero-trust-perplexica";
 export { createOpenclawZeroTrust, OpenclawZeroTrustConfig } from "./zero-trust-openclaw";
-export { createBifrostZeroTrust, BifrostZeroTrustConfig } from "./zero-trust-bifrost";
+
+

@@ -49,9 +49,14 @@ export interface SecretsConfig {
     openrouter_api_key: string;
     openclaw_gateway_token: string;
 
-    // Bifrost
-    bifrost_domain: string;
-    bifrost_admin_email: string;
+    // New API
+    newapi_domain: string;
+
+    // LiteLLM
+    litellm_master_key: string;
+    litellm_salt_key: string;
+    litellm_postgres_password: string;
+    litellm_domain: string;
 }
 
 /**
