@@ -224,7 +224,6 @@ export function generateConfigYaml(): string {
     }
 
     yamlStr += `router_settings:\n`;
-    yamlStr += `  routing_strategy: usage-based-routing-v2\n`;
     yamlStr += `  enable_pre_call_checks: true\n`;
     yamlStr += `  fallbacks:\n`;
 
