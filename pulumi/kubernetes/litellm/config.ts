@@ -47,6 +47,11 @@ const providers: Record<string, { apiKeyEnvVar?: string; apiKey?: string; modelP
         apiKey: "antigravity",
         modelPrefix: "openai/",
         apiBase: "http://cli-proxy-api.cli-proxy-api.svc.cluster.local:8317/v1"
+    },
+    "cli-claude": {
+        apiKey: "claude",
+        modelPrefix: "openai/",
+        apiBase: "http://cli-proxy-api.cli-proxy-api.svc.cluster.local:8317/v1"
     }
 };
 
@@ -139,6 +144,21 @@ export const modelGroups: ModelGroup[] = [
     createGroup("claude-haiku-4.5", "Claude Haiku 4.5", [
         { provider: "cli-github", nameSuffix: "", modelOverride: "claude-haiku-4.5" },
         { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "anthropic/claude-haiku-4.5" }
+    ]),
+    // ------------------------------------------------------------------------
+    // CLAUDE CODE FAMILY (Claude Code CLI -> exclusive)
+    // ------------------------------------------------------------------------
+    createGroup("claudecode-opus-4.6", "Claude Code Opus 4.6", [
+        { provider: "cli-claude", nameSuffix: "", modelOverride: "claude-opus-4-6" }
+    ]),
+    createGroup("claudecode-opus-4.6-fast", "Claude Code Opus 4.6 Fast", [
+        { provider: "cli-claude", nameSuffix: "", modelOverride: "claude-opus-4-6-fast" }
+    ]),
+    createGroup("claudecode-sonnet-4.6", "Claude Code Sonnet 4.6", [
+        { provider: "cli-claude", nameSuffix: "", modelOverride: "claude-sonnet-4-6" }
+    ]),
+    createGroup("claudecode-haiku-4.5", "Claude Code Haiku 4.5", [
+        { provider: "cli-claude", nameSuffix: "", modelOverride: "claude-haiku-4-5-20251001" }
     ]),
     // ------------------------------------------------------------------------
     // GPT-5 FAMILY (GitHub Copilot -> OpenRouter fallback)
