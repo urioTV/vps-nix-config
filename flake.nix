@@ -1,5 +1,5 @@
 {
-  description = "NixOS VPS Configuration";
+  description = "NixOS Multi-Machine Configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -45,6 +45,7 @@
       ];
 
       flake = with inputs; {
+        # === RATMACHINE (VPS) ===
         nixosConfigurations.ratmachine = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
@@ -54,23 +55,52 @@
             sops-nix.nixosModules.sops
             {
               home-manager.users.urio = {
-                imports = [ ./home.nix ];
+                imports = [ ./hosts/ratmachine/home.nix ];
                 home.stateVersion = "24.11";
               };
             }
             ./nix-settings.nix
-            ./configuration.nix
-            ./hardware-configuration.nix
+            ./hosts/ratmachine/configuration.nix
+            ./hosts/ratmachine/hardware-configuration.nix
           ];
         };
 
-        # deploy-rs configuration
+        # === KONRAD-THINK (Local Server) ===
+        nixosConfigurations.konrad-think = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            determinate.nixosModules.default
+            disko.nixosModules.disko
+            home-manager.nixosModules.home-manager
+            # sops-nix.nixosModules.sops  # TODO: Add when age key is configured
+            {
+              home-manager.users.urio = {
+                imports = [ ./hosts/konrad-think/home.nix ];
+                home.stateVersion = "24.11";
+              };
+            }
+            ./nix-settings.nix
+            ./hosts/konrad-think/configuration.nix
+            ./hosts/konrad-think/hardware-configuration.nix
+          ];
+        };
+
+        # === DEPLOY-RS ===
         deploy.nodes.ratmachine = {
-          hostname = "ratmachine"; # Will be overridden by --hostname flag
+          hostname = "ratmachine";
           sshUser = "root";
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.ratmachine;
+          };
+        };
+
+        deploy.nodes.konrad-think = {
+          hostname = "konrad-think";
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.konrad-think;
           };
         };
 

@@ -8,10 +8,10 @@ import * as path from "path";
  * Interface for decrypted secrets from root secrets/secrets.yaml
  */
 export interface SecretsConfig {
-    // VPS Access
+    // Machine Access
     "tailscale-authkey": string;
-    "vps-ip": string;
-    "vps-user": string;
+    "ratmachine-ip": string;
+    "ratmachine-user": string;
 
     // Cloudflare
     cloudflare_api_token: string;
