@@ -85,6 +85,17 @@
           ];
         };
 
+        # === KONRAD-THINK INSTALLER ISO ===
+        nixosConfigurations.konrad-think-installer = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            determinate.nixosModules.default
+            disko.nixosModules.disko
+            ./nix-settings.nix
+            ./hosts/konrad-think/installer-iso.nix
+          ];
+        };
+
         # === DEPLOY-RS ===
         deploy.nodes.ratmachine = {
           hostname = "ratmachine";
@@ -108,6 +119,15 @@
         checks = builtins.mapAttrs (
           system: deployLib: deployLib.deployChecks inputs.self.deploy
         ) deploy-rs.lib;
+
+        # === INSTALLER IMAGES (native NixOS 25.05 method) ===
+        packages.x86_64-linux = {
+          # Installer ISO with nixos-install, disko, etc.
+          konrad-think-installer-iso =
+            inputs.self.nixosConfigurations.konrad-think-installer.config.system.build.images.iso;
+          # Kexec tarball for network boot
+          konrad-think-kexec = inputs.self.nixosConfigurations.konrad-think.config.system.build.images.kexec;
+        };
       };
 
       perSystem =

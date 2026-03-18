@@ -14,6 +14,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Use LTS kernel
+  boot.kernelPackages = pkgs.linuxPackages;
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
@@ -21,6 +24,21 @@
   };
 
   networking.hostName = "konrad-think";
+
+  # # Static IP configuration
+  # networking.useDHCP = false;
+  # networking.interfaces.enp1s0f0 = {
+  #   ipv4.addresses = [
+  #     {
+  #       address = "10.21.37.10";
+  #       prefixLength = 24;
+  #     }
+  #   ];
+  # };
+  # networking.defaultGateway = "10.21.37.1";
+  # networking.nameservers = [
+  #   "10.21.37.1"
+  # ];
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyC3ClITt+UIgaILLBg7cUFmFx61LyRWXjmVvsiVxWslYvmUdMtvkSPR46rJ/Ma9Yey2UabasvamQn2X+tKWOw0xC2WYxyfbN807AoXGjQ+l4DHjXK39gIhMOcFZLgvWFFz0s05yA7iiLqa1eC4JxggeVN0y7TLF3dGjZMs+5W3vhimy2y/oRL4TzJ1MMtcGc3RBo0YCYaczzVz42sd8mgbaVGf/5gXSGlXHptgLOVUYuEcistfqBzVQTns/wtlEngefqn/roAEuu+DUAUg1mSUG/vxEbZSkdOOp8DaltZEQoxWAPNWOlo5JuO+6hjOa60W0ZisSsYdXJPL83KzfMSW9DYUaW+vBHPO521NpFn36G8J8MB9otQq0LlqSdh7S6Oias/QuiFC6rgronDo7+J8+MJHb4uQ/F4xJ23//A0jG16aS+53OLoS4GBzIelKmNprxjAiDwyQbWrqL1vvBExgElZMgQsTf1ocvVAAZENizfZLaMVxpIHhW7kfjm1G6U= urio@Mac.lan"
@@ -52,9 +70,18 @@
     "usb_storage"
     "uas"
     "sd_mod"
+    "r8169"
+    "r8125"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "r8169"
+    "r8125"
+  ];
+
+  # Network card drivers (Realtek RTL8111/8168/8411)
+  boot.extraModulePackages = [ config.boot.kernelPackages.r8125 ];
 
   # Data directories with user access
   systemd.tmpfiles.rules = [
