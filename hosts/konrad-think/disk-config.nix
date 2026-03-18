@@ -1,16 +1,13 @@
 {
   disko.devices = {
     disk = {
+      # System disk - NVMe (always connected)
       main = {
         type = "disk";
-        device = "/dev/sda"; # Placeholder - USER MUST VERIFY
+        device = "/dev/nvme0n1";
         content = {
           type = "gpt";
           partitions = {
-            boot = {
-              size = "1M";
-              type = "EF02"; # for GRUB MBR
-            };
             ESP = {
               priority = 1;
               name = "ESP";
@@ -21,17 +18,20 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
               };
             };
             swap = {
+              priority = 2;
               size = "8G";
               content = {
                 type = "swap";
                 discardPolicy = "both";
-                resumeDevice = true; # optional
+                resumeDevice = true;
               };
             };
             root = {
+              priority = 3;
               size = "100%";
               content = {
                 type = "filesystem";
