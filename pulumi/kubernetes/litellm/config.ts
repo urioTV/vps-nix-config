@@ -43,11 +43,6 @@ const providers: Record<string, { apiKeyEnvVar?: string; apiKey?: string; modelP
         modelPrefix: "openai/",
         apiBase: "http://cli-proxy-api.cli-proxy-api.svc.cluster.local:8317/v1"
     },
-    "cli-antigravity": {
-        apiKey: "antigravity",
-        modelPrefix: "openai/",
-        apiBase: "http://cli-proxy-api.cli-proxy-api.svc.cluster.local:8317/v1"
-    },
     "cli-claude": {
         apiKey: "claude",
         modelPrefix: "openai/",
@@ -210,27 +205,6 @@ export const modelGroups: ModelGroup[] = [
         { provider: "cli-google", nameSuffix: "", modelOverride: "gemini-3-flash-preview" },
         { provider: "openrouter", nameSuffix: "-openrouter", modelOverride: "google/gemini-3-flash-preview" }
     ]),
-    // ------------------------------------------------------------------------
-    // ANTIGRAVITY FAMILY (exclusive models via CLI proxy)
-    // ------------------------------------------------------------------------
-    createGroup("antigravity-claude-opus-4-6-thinking", "Claude Opus 4.6 Thinking", [
-        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "claude-opus-4-6-thinking" }
-    ]),
-    createGroup("antigravity-claude-sonnet-4-6", "Claude Sonnet 4.6", [
-        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "claude-sonnet-4-6" }
-    ]),
-    createGroup("antigravity-gemini-3-flash", "Gemini 3 Flash", [
-        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3-flash" }
-    ]),
-    createGroup("antigravity-gemini-3.1-pro-high", "Gemini 3.1 Pro High", [
-        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3.1-pro-high" }
-    ]),
-    createGroup("antigravity-gemini-3.1-pro-low", "Gemini 3.1 Pro Low", [
-        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3.1-pro-low" }
-    ]),
-    createGroup("antigravity-gemini-3.1-flash-image", "Gemini 3.1 Flash Image", [
-        { provider: "cli-antigravity", nameSuffix: "", modelOverride: "gemini-3.1-flash-image" }
-    ])
 ];
 
 // ----------------------------------------------------------------------------
