@@ -48,6 +48,7 @@
         # === RATMACHINE (VPS) ===
         nixosConfigurations.ratmachine = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             determinate.nixosModules.default
             disko.nixosModules.disko

@@ -39,9 +39,7 @@
         "image": "syncthing/relaysrv",
         "tag": "latest"
     },
-    "openclaw-operator": {
-        "tag": "0.10.29"
-    },
+
     "cli-proxy-api": {
         "image": "eceasy/cli-proxy-api-plus",
         "tag": "latest"

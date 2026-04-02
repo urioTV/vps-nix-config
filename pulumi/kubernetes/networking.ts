@@ -12,7 +12,6 @@ export const serviceIPs = {
     syncthing: "10.43.200.204",
     "syncthing-relay": "10.43.200.205",
     "syncthing-discovery": "10.43.200.206",
-    openclaw: "10.43.200.207",
     "cli-proxy-api": "10.43.200.208",
     litellm: "10.43.200.209",
 

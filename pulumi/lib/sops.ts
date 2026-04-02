@@ -40,14 +40,10 @@ export interface SecretsConfig {
 
     // Syncthing Discovery
     syncthing_discovery_domain: string;
-    openclaw_domain: string;
-    openclaw_cf_access_policy_email?: string;
-
-    // OpenClaw LLM Providers
+    // APIs
     zai_api_key: string;
     nanogpt_api_key: string;
     openrouter_api_key: string;
-    openclaw_gateway_token: string;
 
     // New API
     newapi_domain: string;

@@ -12,7 +12,6 @@ export { deploySyncthing, SyncthingConfig } from "./syncthing";
 export { deployPerplexica, PerplexicaConfig } from "./perplexica";
 export { deploySyncthingDiscovery, SyncthingDiscoveryConfig } from "./syncthing-discovery";
 export { deployCertManager, CertManagerConfig } from "./cert-manager";
-export { deployOpenclaw, OpenclawConfig } from "./openclaw";
 export { deployCliProxyApi, CliProxyApiConfig } from "./cli-proxy";
 export { deployLiteLLMPostgres, LiteLLMPostgresConfig, deployLiteLLMProxy, LiteLLMProxyConfig } from "./litellm";
 
