@@ -150,7 +150,7 @@
               pulumi-bin
               pulumiPackages.pulumi-nodejs
               nodejs_22
-              nodePackages.typescript
+              typescript
               bun
 
               # Kubernetes
