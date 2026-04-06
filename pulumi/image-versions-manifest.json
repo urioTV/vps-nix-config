@@ -1,7 +1,7 @@
 {
     "aiostreams": {
         "image": "ghcr.io/viren070/aiostreams",
-        "tag": "v2.22.0"
+        "tag": "v2.26.0"
     },
     "aiometadata": {
         "image": "ghcr.io/cedya77/aiometadata",
