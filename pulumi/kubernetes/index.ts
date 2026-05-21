@@ -5,14 +5,10 @@ export { deployJackett, JackettConfig } from "./common/jackett";
 export { deployByparr, ByparrConfig } from "./common/byparr";
 export { deployMinio, MinioConfig } from "./minio";
 export { deployLonghorn } from "./longhorn";
-export { deployMonitoring } from "./monitoring";
 export { deployCalico } from "./cni/calico";
 export { deploySyncthingRelay, SyncthingRelayConfig } from "./syncthing-relay";
 export { deploySyncthing, SyncthingConfig } from "./syncthing";
-export { deployPerplexica, PerplexicaConfig } from "./perplexica";
 export { deploySyncthingDiscovery, SyncthingDiscoveryConfig } from "./syncthing-discovery";
 export { deployCertManager, CertManagerConfig } from "./cert-manager";
-export { deployCliProxyApi, CliProxyApiConfig } from "./cli-proxy";
-export { deployLiteLLMPostgres, LiteLLMPostgresConfig, deployLiteLLMProxy, LiteLLMProxyConfig } from "./litellm";
 
 

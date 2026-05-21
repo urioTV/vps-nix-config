@@ -27,10 +27,6 @@
         "image": "cloudflare/cloudflared",
         "tag": "2026.1.2"
     },
-    "perplexica": {
-        "image": "itzcrazykns1337/vane",
-        "tag": "latest"
-    },
     "syncthing": {
         "image": "syncthing/syncthing",
         "tag": "latest"
@@ -38,18 +34,5 @@
     "syncthing-relay": {
         "image": "syncthing/relaysrv",
         "tag": "latest"
-    },
-
-    "cli-proxy-api": {
-        "image": "eceasy/cli-proxy-api-plus",
-        "tag": "latest"
-    },
-    "litellm": {
-        "image": "ghcr.io/berriai/litellm",
-        "tag": "main-latest"
-    },
-    "litellm-postgres": {
-        "image": "postgres",
-        "tag": "15-alpine"
     }
 }

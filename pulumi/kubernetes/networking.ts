@@ -8,12 +8,9 @@ export const serviceIPs = {
     aiometadata: "10.43.200.200",
     jackett: "10.43.200.201",
     byparr: "10.43.200.202",
-    monitoring: "10.43.200.203",
     syncthing: "10.43.200.204",
     "syncthing-relay": "10.43.200.205",
     "syncthing-discovery": "10.43.200.206",
-    "cli-proxy-api": "10.43.200.208",
-    litellm: "10.43.200.209",
 
     // Add new services here as needed
 } as const;

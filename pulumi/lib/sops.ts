@@ -30,29 +30,8 @@ export interface SecretsConfig {
     // Jackett
     jackett_api_key: string;
 
-    // Monitoring
-    grafana_admin_password: string;
-    grafana_domain: string;
-
-    // Perplexica
-    perplexica_domain: string;
-    perplexica_admin_email: string;
-
     // Syncthing Discovery
     syncthing_discovery_domain: string;
-    // APIs
-    zai_api_key: string;
-    nanogpt_api_key: string;
-    openrouter_api_key: string;
-
-    // New API
-    newapi_domain: string;
-
-    // LiteLLM
-    litellm_master_key: string;
-    litellm_salt_key: string;
-    litellm_postgres_password: string;
-    litellm_domain: string;
 }
 
 /**

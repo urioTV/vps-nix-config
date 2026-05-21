@@ -11,13 +11,9 @@ export function createNamespaces(provider: k8s.Provider) {
         "aiostreams",
         "byparr",
         "jackett",
-        "litellm",
         "minio",
-        "monitoring",
-        "perplexica",
         "syncthing",
         "syncthing-relay",
-        "cli-proxy-api",
     ];
 
     const nsResources: Record<string, k8s.core.v1.Namespace> = {};
