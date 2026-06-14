@@ -118,7 +118,7 @@ export function deployAiometadata(
                             {
                                 name: "aiometadata",
                                 image: `${images.aiometadata.image}:${images.aiometadata.tag}`,
-                                ports: [{ containerPort: 3232 }],
+                                ports: [{ containerPort: 1337 }],
                                 envFrom: [{ configMapRef: { name: "aiometadata-env" } }],
                                 volumeMounts: [
                                     { name: "aiometadata-data", mountPath: "/app/addon/data" },
@@ -150,7 +150,7 @@ export function deployAiometadata(
                 selector: { app: "aiometadata" },
                 type: "ClusterIP",
                 clusterIP: getServiceIP("aiometadata"),
-                ports: [{ name: "http", port: 3232, targetPort: 3232 }],
+                ports: [{ name: "http", port: 3232, targetPort: 1337 }],
             },
         },
         { provider, dependsOn: [deployment] }
