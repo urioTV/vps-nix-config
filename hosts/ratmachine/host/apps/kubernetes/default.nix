@@ -30,6 +30,10 @@
     name = "iqn.2016-04.com.open-iscsi:${config.networking.hostName}";
   };
 
+  # Disable iscsid socket activation — Longhorn uses the service directly.
+  # The socket conflicts with the service when both are (re)started during NixOS switch.
+  systemd.sockets.iscsid.enable = false;
+
   # Kubectl and helm in system environment
   environment.systemPackages = with pkgs; [
     kubectl

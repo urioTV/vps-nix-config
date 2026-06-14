@@ -1,11 +1,11 @@
 {
     "aiostreams": {
         "image": "ghcr.io/viren070/aiostreams",
-        "tag": "v2.26.0"
+        "tag": "v2.30.3"
     },
     "aiometadata": {
         "image": "ghcr.io/cedya77/aiometadata",
-        "tag": "v.testing.20260203.2-f0499ad"
+        "tag": "1.0.0"
     },
     "redis": {
         "image": "redis",
@@ -13,11 +13,11 @@
     },
     "jackett": {
         "image": "linuxserver/jackett",
-        "tag": "0.24.1027"
+        "tag": "0.24.2066"
     },
     "byparr": {
         "image": "ghcr.io/thephaseless/byparr",
-        "tag": "0d1ba8dff1dd2db733c3762d07254b4b07847f5e-amd64"
+        "tag": "latest"
     },
     "minio": {
         "image": "minio/minio",
@@ -25,7 +25,7 @@
     },
     "cloudflared": {
         "image": "cloudflare/cloudflared",
-        "tag": "2026.1.2"
+        "tag": "2026.6.0"
     },
     "syncthing": {
         "image": "syncthing/syncthing",

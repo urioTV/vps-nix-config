@@ -59,7 +59,9 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
         },
     }, opts);
 
-    // Create DNS record pointing to tunnel
+    // Create DNS record pointing to tunnel.
+    // ignoreChanges on "name" because Cloudflare API returns the FQDN but the
+    // provider v6 sends the relative name, causing a spurious 400 on update.
     new cloudflare.DnsRecord(`${config.tunnelName}-dns`, {
         zoneId: config.zoneId,
         name: config.dnsRecordName,
@@ -67,7 +69,7 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
         type: "CNAME",
         proxied: true,
         ttl: 1,
-    }, opts);
+    }, { ...opts, ignoreChanges: ["name"] });
 
     return {
         tunnelId: tunnel.id,
