@@ -1,11 +1,12 @@
 # Nix
 result
 result-*
+.gcroots/
 *.qcow2
 
 # Direnv
 .direnv/
-.envrc
+.envrc.local
 
 # Editors
 .idea/

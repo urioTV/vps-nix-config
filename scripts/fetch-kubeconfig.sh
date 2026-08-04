@@ -15,8 +15,11 @@ if [[ "$MACHINE" == *"@"* && -z "$TARGET" ]]; then
   MACHINE="ratmachine"  # default machine name for flake
 fi
 
-# If TARGET not provided, lookup from secrets
-if [ -z "$TARGET" ]; then
+# Inside the devshell, use the generated SSH alias. Outside it, retain the
+# direct SOPS lookup for backwards compatibility.
+if [ -z "$TARGET" ] && [ -n "${SSH_CONFIG_FILE:-}" ] && [ -r "$SSH_CONFIG_FILE" ]; then
+  TARGET="$MACHINE"
+elif [ -z "$TARGET" ]; then
   if ! command -v sops &> /dev/null; then
     echo "Error: sops is not installed."
     exit 1
@@ -34,6 +37,11 @@ if [ -z "$TARGET" ]; then
   TARGET="root@$MACHINE_IP"
 fi
 
+SSH=(ssh)
+if [ -n "${SSH_CONFIG_FILE:-}" ] && [ -r "$SSH_CONFIG_FILE" ]; then
+  SSH+=( -F "$SSH_CONFIG_FILE" )
+fi
+
 # Extract user and host from TARGET (format: user@host)
 TARGET_USER="${TARGET%%@*}"
 TARGET_HOST="${TARGET#*@}"
@@ -45,7 +53,7 @@ echo "Connecting to $TARGET to fetch configuration..."
 
 # 1. Get Remote Hostname
 echo "🔍 Resolving Remote Hostname..."
-REMOTE_HOST=$(ssh "$TARGET" "hostname")
+REMOTE_HOST=$("${SSH[@]}" "$TARGET" "hostname")
 
 if [ -z "$REMOTE_HOST" ]; then
   echo "❌ Error: Could not determine remote hostname."
@@ -55,7 +63,7 @@ echo "✅ Found Remote Hostname: $REMOTE_HOST"
 
 # 2. Fetch config and replace IP with Hostname
 echo "⬇️  Downloading kubeconfig..."
-ssh "$TARGET" "cat $KUBECONFIG_REMOTE" | \
+"${SSH[@]}" "$TARGET" "cat $KUBECONFIG_REMOTE" | \
   sed "s/127.0.0.1/$REMOTE_HOST/g" | \
   sed "s/localhost/$REMOTE_HOST/g" > "$KUBECONFIG_LOCAL"
 
