@@ -11,6 +11,7 @@
       "--disable-network-policy" # Calico handles network policies
       "--cluster-cidr=10.42.0.0/16"
       "--service-cidr=10.43.0.0/16"
+      "--resolv-conf=/etc/k3s-resolv.conf"
     ];
   };
 
@@ -75,6 +76,13 @@
       30001 # Syncthing relay (NodePort - UDP for relay)
     ];
   };
+
+  # Keep pod DNS independent from Tailscale's MagicDNS resolver. CoreDNS
+  # forwards to the kubelet resolv.conf and cannot reach MagicDNS from a pod.
+  environment.etc."k3s-resolv.conf".text = ''
+    nameserver 1.1.1.1
+    nameserver 8.8.8.8
+  '';
 
   networking.nameservers = [
     "1.1.1.1"
