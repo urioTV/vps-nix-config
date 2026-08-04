@@ -14,7 +14,7 @@ export function deployCalico(provider: k8s.Provider) {
         "tigera-operator",
         {
             chart: "tigera-operator",
-            version: "v3.27.0", // Use a fixed version for stability
+            version: "v3.32.1", // Kubernetes 1.35 is tested with Calico 3.32
             repositoryOpts: {
                 repo: "https://docs.tigera.io/calico/charts",
             },
@@ -46,5 +46,25 @@ export function deployCalico(provider: k8s.Provider) {
         { provider, dependsOn: [namespace] }
     );
 
-    return { release };
+    // NetBird attaches its own XDP program to loopback. Felix must not try to
+    // replace it while Calico uses the iptables dataplane.
+    const felixConfiguration = new k8s.apiextensions.CustomResourcePatch(
+        "calico-felix-configuration",
+        {
+            apiVersion: "crd.projectcalico.org/v1",
+            kind: "FelixConfiguration",
+            metadata: {
+                name: "default",
+                annotations: {
+                    "pulumi.com/patchForce": "true",
+                },
+            },
+            spec: {
+                xdpEnabled: false,
+            },
+        },
+        { provider, dependsOn: [release] }
+    );
+
+    return { release, felixConfiguration };
 }

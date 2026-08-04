@@ -1,4 +1,5 @@
 import * as k8s from "@pulumi/kubernetes";
+import * as images from "../image-versions-manifest.json";
 import { getServiceIP } from "./networking";
 
 export interface SyncthingDiscoveryConfig {
@@ -75,7 +76,7 @@ export function deploySyncthingDiscovery(
                         containers: [
                             {
                                 name: "discovery",
-                                image: "ghcr.io/syncthing/discosrv:latest",
+                                image: `${images["syncthing-discovery"].image}:${images["syncthing-discovery"].tag}`,
                                 ports: [
                                     { containerPort: 8443, name: "https" },
                                 ],

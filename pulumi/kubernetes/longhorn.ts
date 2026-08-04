@@ -8,7 +8,7 @@ export function deployLonghorn(provider: k8s.Provider) {
         "longhorn",
         {
             chart: "longhorn",
-            version: "1.8.0",
+            version: "1.12.0",
             repositoryOpts: {
                 repo: "https://charts.longhorn.io",
             },

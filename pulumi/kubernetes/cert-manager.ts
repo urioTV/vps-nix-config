@@ -20,12 +20,14 @@ export function deployCertManager(config: CertManagerConfig, provider: k8s.Provi
             name: "cert-manager",
             namespace: ns,
             chart: "cert-manager",
-            version: "v1.14.5",
+            version: "v1.21.1",
             repositoryOpts: {
                 repo: "https://charts.jetstack.io",
             },
             values: {
-                installCRDs: true,
+                crds: {
+                    enabled: true,
+                },
                 serviceAccount: {
                     create: true,
                 },
