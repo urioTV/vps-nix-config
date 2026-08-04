@@ -65,7 +65,7 @@ export function deploySyncthingRelay(
                                     { containerPort: 22067, name: "relay" },
                                 ],
                                 volumeMounts: [
-                                    { name: "data", mountPath: "/home/relaysrv/certs" },
+                                    { name: "data", mountPath: "/var/strelaysrv" },
                                 ],
                             },
                         ],
