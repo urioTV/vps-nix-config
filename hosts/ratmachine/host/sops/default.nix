@@ -9,6 +9,7 @@
     ];
 
     secrets = {
+      netbird-authkey = { };
       tailscale-authkey = { };
     };
   };

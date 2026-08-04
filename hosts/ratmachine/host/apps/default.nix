@@ -3,6 +3,7 @@
 {
   imports = [
     ./kubernetes
+    ./netbird
     ./tailscale
   ];
 }

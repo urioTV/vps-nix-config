@@ -61,7 +61,7 @@
       "cali+"
       "tunl0"
       "tailscale0"
-    ]; # Trust Calico and Tailscale interfaces
+    ]; # Trust Calico and Tailscale; NetBird adds wt0 in its own module.
 
     allowedTCPPorts = [
       # 179 # BGP (Calico) - critical for routing
@@ -81,7 +81,6 @@
     "8.8.8.8"
   ];
 
-  # Port 6443 doesn't need to be opened globally
-  # - tailscale0 is already trusted in host/apps/tailscale/default.nix
-  # - K8s API is accessible only via Tailscale
+  # Port 6443 doesn't need to be opened globally. The Tailscale and NetBird
+  # interfaces are trusted by their respective modules.
 }
