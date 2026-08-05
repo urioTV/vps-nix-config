@@ -20,6 +20,8 @@ result-*
 
 # Temporary files
 tmp/
+.codegraph/
+.codegraph/*
 
 # Secrets
 .env
