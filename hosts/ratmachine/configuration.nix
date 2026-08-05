@@ -53,9 +53,11 @@
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyC3ClITt+UIgaILLBg7cUFmFx61LyRWXjmVvsiVxWslYvmUdMtvkSPR46rJ/Ma9Yey2UabasvamQn2X+tKWOw0xC2WYxyfbN807AoXGjQ+l4DHjXK39gIhMOcFZLgvWFFz0s05yA7iiLqa1eC4JxggeVN0y7TLF3dGjZMs+5W3vhimy2y/oRL4TzJ1MMtcGc3RBo0YCYaczzVz42sd8mgbaVGf/5gXSGlXHptgLOVUYuEcistfqBzVQTns/wtlEngefqn/roAEuu+DUAUg1mSUG/vxEbZSkdOOp8DaltZEQoxWAPNWOlo5JuO+6hjOa60W0ZisSsYdXJPL83KzfMSW9DYUaW+vBHPO521NpFn36G8J8MB9otQq0LlqSdh7S6Oias/QuiFC6rgronDo7+J8+MJHb4uQ/F4xJ23//A0jG16aS+53OLoS4GBzIelKmNprxjAiDwyQbWrqL1vvBExgElZMgQsTf1ocvVAAZENizfZLaMVxpIHhW7kfjm1G6U= urio@Mac.lan"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRfYCXQz7XXM9pupEpNw949Yh2fuMvfJouJZi6+HOIH urio@konrad-m18"
   ];
   users.users.urio.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyC3ClITt+UIgaILLBg7cUFmFx61LyRWXjmVvsiVxWslYvmUdMtvkSPR46rJ/Ma9Yey2UabasvamQn2X+tKWOw0xC2WYxyfbN807AoXGjQ+l4DHjXK39gIhMOcFZLgvWFFz0s05yA7iiLqa1eC4JxggeVN0y7TLF3dGjZMs+5W3vhimy2y/oRL4TzJ1MMtcGc3RBo0YCYaczzVz42sd8mgbaVGf/5gXSGlXHptgLOVUYuEcistfqBzVQTns/wtlEngefqn/roAEuu+DUAUg1mSUG/vxEbZSkdOOp8DaltZEQoxWAPNWOlo5JuO+6hjOa60W0ZisSsYdXJPL83KzfMSW9DYUaW+vBHPO521NpFn36G8J8MB9otQq0LlqSdh7S6Oias/QuiFC6rgronDo7+J8+MJHb4uQ/F4xJ23//A0jG16aS+53OLoS4GBzIelKmNprxjAiDwyQbWrqL1vvBExgElZMgQsTf1ocvVAAZENizfZLaMVxpIHhW7kfjm1G6U= urio@Mac.lan"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDRfYCXQz7XXM9pupEpNw949Yh2fuMvfJouJZi6+HOIH urio@konrad-m18"
   ];
 
   users.users.urio = {

@@ -7,6 +7,7 @@
       # "--disable=traefik" # Disable built-in traefik (optional)
       "--disable=local-storage" # Disable built-in local-path
       "--tls-san=${config.networking.hostName}"
+      "--tls-san=ratmachine.netbird.cloud"
       "--flannel-backend=none"
       "--disable-network-policy" # Calico handles network policies
       "--cluster-cidr=10.42.0.0/16"
