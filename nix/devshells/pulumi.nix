@@ -35,8 +35,6 @@
       pulumiPackages = with pkgs; [
         # The upstream Pulumi archive already contains the Node.js language host.
         pulumiCli
-        nodejs_22
-        typescript
         bun
         kubectl
       ];

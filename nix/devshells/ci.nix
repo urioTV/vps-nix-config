@@ -15,7 +15,6 @@
         pkgs.git
         nixosDev.colmenaCli
         pulumiDev.pulumiCli
-        pkgs.nodejs_22
         pkgs.bun
       ];
 
