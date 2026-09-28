@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
 import { createTunnel, createAiostreamsZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployMinio, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
+import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -65,16 +65,6 @@ deployCalico(k8sProvider);
 
 // Create namespaces
 const namespaces = createNamespaces(k8sProvider);
-
-// Deploy MinIO
-deployMinio(
-    {
-        namespace: namespaces.minio,
-        rootUser: secrets.minio_root_user,
-        rootPassword: secrets.minio_root_password,
-    },
-    k8sProvider
-);
 
 // Deploy AIOMetadata
 deployAiometadata(

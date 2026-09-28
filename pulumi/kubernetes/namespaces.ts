@@ -11,7 +11,6 @@ export function createNamespaces(provider: k8s.Provider) {
         "aiostreams",
         "byparr",
         "jackett",
-        "minio",
         "syncthing",
         "syncthing-relay",
     ];

@@ -23,10 +23,6 @@ export interface SecretsConfig {
     aiostreams_admin_email: string;
     aiostreams_secret_key: string;
 
-    // MinIO
-    minio_root_user: string;
-    minio_root_password: string;
-
     // Jackett
     jackett_api_key: string;
 
