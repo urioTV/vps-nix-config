@@ -14,7 +14,7 @@ export function deployCalico(provider: k8s.Provider) {
         "tigera-operator",
         {
             chart: "tigera-operator",
-            version: "v3.32.1", // Kubernetes 1.35 is tested with Calico 3.32
+            version: "v3.32.2", // Kubernetes 1.35 is tested with Calico 3.32
             repositoryOpts: {
                 repo: "https://docs.tigera.io/calico/charts",
             },
