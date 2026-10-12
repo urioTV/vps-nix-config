@@ -52,6 +52,14 @@
     "L+ /usr/local/bin/iscsiadm - - - - ${pkgs.openiscsi}/bin/iscsiadm"
   ];
 
+  # Calico owns these interfaces. DHCP IPv4LL routes overlap its pod gateway
+  # (169.254.1.1) and can prevent proxy ARP after a host reboot.
+  networking.dhcpcd.denyInterfaces = [
+    "cali*"
+    "vxlan.calico"
+    "tunl0"
+  ];
+
   boot.kernelModules = [
     "br_netfilter"
     "overlay"
