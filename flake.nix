@@ -34,6 +34,13 @@
       url = "github:nix-community/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Declarative libvirt domains/networks/pools. Pinned to a tagged release:
+    # upstream warns the master branch is frequently broken.
+    nixvirt = {
+      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.6.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
