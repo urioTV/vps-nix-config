@@ -37,6 +37,8 @@
         pulumiCli
         bun
         kubectl
+        # ansible-playbook is run locally by the Ansible Terraform provider (pulumi/hosts).
+        ansible
       ];
 
       pulumiEnv = [
