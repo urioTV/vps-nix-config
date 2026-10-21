@@ -1,0 +1,89 @@
+---
+# NetBird client baseline for Ubuntu hosts (mikr.us ivy135).
+#
+# Applied by Pulumi through the ansible/ansible Terraform provider
+# (pulumi/hosts/ivy135.ts), which runs ansible-playbook locally over SSH.
+# Every task converges the host to the declared state and reports "ok" when
+# nothing has to change, so the playbook is safe to replay on each `pulumi up`.
+#
+# Joining the network is intentionally NOT done here: a connected peer needs no
+# setup key, and the key handling is still an open decision.
+
+- name: NetBird client baseline
+  hosts: all
+  become: true
+  vars:
+    netbird_version: "0.81.3"
+    netbird_keyring: /usr/share/keyrings/netbird-archive-keyring.gpg
+    # Fixed interpreter: avoids Ansible's discovery warning on every run.
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Ensure curl and gnupg are present
+      ansible.builtin.apt:
+        name:
+          - curl
+          - gnupg
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install the NetBird archive keyring
+      ansible.builtin.shell: >-
+        curl -fsSL https://pkgs.netbird.io/debian/public.key
+        | gpg --dearmor -o {{ netbird_keyring }}
+      args:
+        executable: /bin/bash
+        creates: "{{ netbird_keyring }}"
+
+    - name: Ensure python3-debian is present (deb822 module needs it, also in check mode)
+      ansible.builtin.apt:
+        name: python3-debian
+        state: present
+      # Module prerequisite, not a configuration change: install it even in check mode.
+      check_mode: false
+
+    - name: Remove the legacy one-line NetBird source (replaced by deb822)
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/netbird.list
+        state: absent
+
+    - name: Configure the NetBird apt repository
+      ansible.builtin.deb822_repository:
+        name: netbird
+        types: [deb]
+        uris: https://pkgs.netbird.io/debian
+        suites: [stable]
+        components: [main]
+        signed_by: "{{ netbird_keyring }}"
+        state: present
+
+    - name: Install the pinned NetBird client
+      ansible.builtin.apt:
+        name: "netbird={{ netbird_version }}"
+        state: present
+        update_cache: true
+
+    - name: Hold the NetBird package against unplanned upgrades
+      ansible.builtin.dpkg_selections:
+        name: netbird
+        selection: hold
+
+    - name: Enable and start the NetBird service
+      ansible.builtin.systemd:
+        name: netbird
+        enabled: true
+        state: started
+
+    - name: Read NetBird connection status
+      ansible.builtin.command: netbird status
+      register: netbird_status
+      changed_when: false
+      # Read-only query: run it in check mode too, or the assertion sees no output.
+      check_mode: false
+
+    - name: Fail when the peer is not connected to the management service
+      ansible.builtin.assert:
+        that:
+          - "'Management: Connected' in netbird_status.stdout"
+        fail_msg: "NetBird is installed but not connected; join it manually or with a setup key"

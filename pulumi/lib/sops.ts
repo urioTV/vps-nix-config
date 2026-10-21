@@ -28,6 +28,9 @@ export interface SecretsConfig {
 
     // Syncthing Discovery
     syncthing_discovery_domain: string;
+
+    // NetBird setup key (shared with ratmachine); used when a peer has to join the network
+    "netbird-authkey": string;
 }
 
 /**

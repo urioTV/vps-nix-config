@@ -2,6 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
+import { deployIvy135Baseline } from "./hosts/ivy135";
 import { createTunnel, createAiostreamsZeroTrust } from "./cloudflare";
 import { createNamespaces, deployEngram, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
@@ -138,6 +139,12 @@ deploySyncthingDiscovery(
     },
     k8sProvider
 );
+// ============================================================================
+// Hosts (Ubuntu, managed with Ansible through the Terraform provider)
+// ============================================================================
+
+const ivy135 = deployIvy135Baseline();
+
 // ============================================================================
 // Exports
 // ============================================================================

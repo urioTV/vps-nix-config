@@ -5,3 +5,9 @@ runtime:
     typescript: true
     packagemanager: bun
 description: VPS Infrastructure - Cloudflare Tunnel, Zero Trust, and Kubernetes resources
+packages:
+  ansible:
+    source: terraform-provider
+    version: 1.5.0
+    parameters:
+      - ansible/ansible
