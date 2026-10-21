@@ -9,6 +9,7 @@ export interface TunnelConfig {
     domainName: string;
     dnsRecordName: string;
     serviceUrl: string;
+    additionalIngresses?: Array<{ domainName: string; dnsRecordName: string; serviceUrl: string }>;
     provider: cloudflare.Provider;
 }
 
@@ -52,6 +53,10 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
                     hostname: config.domainName,
                     service: config.serviceUrl,
                 },
+                ...(config.additionalIngresses ?? []).map((ingress) => ({
+                    hostname: ingress.domainName,
+                    service: ingress.serviceUrl,
+                })),
                 {
                     service: "http_status:404",
                 },
@@ -70,6 +75,17 @@ export function createTunnel(config: TunnelConfig): TunnelOutputs {
         proxied: true,
         ttl: 1,
     }, { ...opts, ignoreChanges: ["name"] });
+
+    for (const ingress of config.additionalIngresses ?? []) {
+        new cloudflare.DnsRecord(`${config.tunnelName}-${ingress.dnsRecordName}-dns`, {
+            zoneId: config.zoneId,
+            name: ingress.dnsRecordName,
+            content: pulumi.interpolate`${tunnel.id}.cfargotunnel.com`,
+            type: "CNAME",
+            proxied: true,
+            ttl: 1,
+        }, { ...opts, ignoreChanges: ["name"] });
+    }
 
     return {
         tunnelId: tunnel.id,

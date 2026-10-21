@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
 import { createTunnel, createAiostreamsZeroTrust } from "./cloudflare";
-import { createNamespaces, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
+import { createNamespaces, deployEngram, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -41,6 +41,11 @@ const tunnel = createTunnel({
     domainName: secrets.aiostreams_domain,
     dnsRecordName: "aiostreams",
     serviceUrl: "http://aiostreams:3000",
+    additionalIngresses: [{
+        domainName: "engram.urio.dev",
+        dnsRecordName: "engram",
+        serviceUrl: "http://engram-cloud.engram:18080",
+    }],
     provider: cloudflareProvider,
 });
 
@@ -65,6 +70,12 @@ deployCalico(k8sProvider);
 
 // Create namespaces
 const namespaces = createNamespaces(k8sProvider);
+
+// Deploy Engram Cloud sync service
+const engram = deployEngram(
+    { namespace: namespaces.engram },
+    k8sProvider
+);
 
 // Deploy AIOMetadata
 deployAiometadata(
@@ -134,6 +145,9 @@ deploySyncthingDiscovery(
 export const tunnelId = tunnel.tunnelId;
 export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
+export const engramUrl = "https://engram.urio.dev";
+export const engramCloudToken = pulumi.secret(engram.cloudToken);
+export const engramCloudAdmin = pulumi.secret(engram.cloudAdmin);
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;
 
 

@@ -11,6 +11,14 @@
         "image": "redis",
         "tag": "8.10.2-alpine"
     },
+    "engram": {
+        "image": "ghcr.io/gentleman-programming/engram",
+        "tag": "v2.0.0"
+    },
+    "engramPostgres": {
+        "image": "postgres",
+        "tag": "16.15-alpine"
+    },
     "jackett": {
         "image": "linuxserver/jackett",
         "tag": "0.24.2685"
