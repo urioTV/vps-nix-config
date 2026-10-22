@@ -1,5 +1,6 @@
 export { createNamespaces } from "./namespaces";
 export { deployEngram, EngramConfig } from "./engram";
+export { deployAttic, AtticConfig, ATTIC_DOMAIN } from "./attic";
 export { deployAiometadata, AiometadataConfig } from "./stremio-addons/aiometadata";
 export { deployAiostreams, AiostreamsConfig } from "./stremio-addons/aiostreams";
 export { deployJackett, JackettConfig } from "./common/jackett";

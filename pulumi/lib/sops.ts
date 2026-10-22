@@ -29,6 +29,9 @@ export interface SecretsConfig {
     // Syncthing Discovery
     syncthing_discovery_domain: string;
 
+    // Attic binary cache: RS256 key that signs access tokens (base64 PKCS#1 PEM)
+    "attic-rs256-secret-base64": string;
+
     // NetBird setup key (shared with ratmachine); used when a peer has to join the network
     "netbird-authkey": string;
 }

@@ -42,5 +42,9 @@
     "syncthing-discovery": {
         "image": "ghcr.io/syncthing/discosrv",
         "tag": "2.1.5"
+    },
+    "attic": {
+        "image": "ghcr.io/zhaofengli/attic",
+        "tag": "latest@sha256:317924e10e70416e69d401880bb71b3aae69b413ecafcfc54018f61929464526"
     }
 }

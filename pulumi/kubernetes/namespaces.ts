@@ -7,6 +7,7 @@ export function createNamespaces(provider: k8s.Provider) {
     const namespaces = [
         "cert-manager",
         "engram",
+        "attic",
 
         "aiometadata",
         "aiostreams",
