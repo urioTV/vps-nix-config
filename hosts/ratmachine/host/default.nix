@@ -5,5 +5,7 @@
     ./pkgs
     ./apps
     ./sops
+    ./nix-cache
+    ./security
   ];
 }

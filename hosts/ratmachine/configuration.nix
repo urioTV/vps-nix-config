@@ -35,7 +35,8 @@
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
-    settings.PermitRootLogin = "yes";
+    # Root may log in only with a key (colmena deploys as root). Never with a password.
+    settings.PermitRootLogin = "prohibit-password";
   };
 
   networking.hostName = "ratmachine";
