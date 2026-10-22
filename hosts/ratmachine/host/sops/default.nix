@@ -10,6 +10,7 @@
 
     secrets = {
       netbird-authkey = { };
+      github-runner-pat = { };
       tailscale-authkey = { };
     };
   };
