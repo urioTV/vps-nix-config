@@ -22,7 +22,7 @@
 
   # Keep kernel builds from starving the k3s workloads on this host.
   # The runner executes workflow code from main, so it gets a restricted sandbox.
-  # ProtectSystem=strict is left out: nix and the cachix/attic steps need writable paths.
+  # ProtectSystem=strict is left out: nix and the cachix steps need writable paths.
   systemd.services.github-runner-urio-nur.serviceConfig = {
     NoNewPrivileges = true;
     PrivateTmp = true;

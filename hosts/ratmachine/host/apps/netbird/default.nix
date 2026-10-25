@@ -3,8 +3,6 @@
   services.netbird = {
     enable = true;
 
-    # Tailscale's server mode already enables the same global IP forwarding.
-    # Keep a single owner while both overlays run side by side.
     useRoutingFeatures = "none";
 
     clients.default = {
@@ -19,6 +17,13 @@
         setupKeyFile = config.sops.secrets.netbird-authkey.path;
       };
     };
+  };
+
+  # IP forwarding for Kubernetes routing over the overlay (previously owned by
+  # the removed Tailscale module; NetBird is the only overlay now).
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
   };
 
   # Allow access to host and Kubernetes services through the NetBird overlay.

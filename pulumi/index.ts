@@ -5,7 +5,7 @@ import { loadSecrets } from "./lib/sops";
 import { deployIvy135Baseline } from "./hosts/ivy135";
 import { createTunnel, createAiostreamsZeroTrust } from "./cloudflare";
 import { configureTraefik } from "./kubernetes/traefik";
-import { createNamespaces, deployAttic, ATTIC_DOMAIN, deployEngram, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
+import { createNamespaces, deployEngram, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
 // ============================================================================
 // Configuration
@@ -79,27 +79,8 @@ const engram = deployEngram(
     k8sProvider
 );
 
-// Traefik: lift the 60s default readTimeout so large attic uploads complete
+// Traefik: lift the 60s default readTimeout so slow uploads complete
 configureTraefik(k8sProvider);
-
-// Deploy attic (private Nix binary cache, 20 GiB volume)
-const attic = deployAttic(
-    {
-        namespace: namespaces.attic,
-        rs256SecretBase64: secrets["attic-rs256-secret-base64"],
-    },
-    k8sProvider
-);
-
-// Attic is served directly (DNS-only) through Traefik, bypassing the Cloudflare proxy.
-new cloudflare.DnsRecord("attic-direct-dns", {
-    zoneId: secrets.cloudflare_zone_id,
-    name: "attic",
-    type: "A",
-    content: "57.128.215.205",
-    proxied: false,
-    ttl: 300,
-}, { provider: cloudflareProvider, ignoreChanges: ["name"] });
 
 // Deploy AIOMetadata
 deployAiometadata(
@@ -176,7 +157,6 @@ export const tunnelId = tunnel.tunnelId;
 export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
 export const engramUrl = "https://engram.urio.dev";
-export const atticUrl = `https://${ATTIC_DOMAIN}`;
 export const engramCloudToken = pulumi.secret(engram.cloudToken);
 export const engramCloudAdmin = pulumi.secret(engram.cloudAdmin);
 export const syncthingDiscoveryUrl = `https://${secrets.syncthing_discovery_domain}`;

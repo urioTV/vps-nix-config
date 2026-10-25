@@ -11,7 +11,8 @@
     secrets = {
       netbird-authkey = { };
       github-runner-pat = { };
-      tailscale-authkey = { };
+      # Private Nix binary-cache signing key for Harmonia (ed25519, PEM).
+      harmonia-cache-key = { };
     };
   };
 }

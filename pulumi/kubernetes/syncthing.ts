@@ -76,7 +76,7 @@ export function deploySyncthing(config: SyncthingConfig, provider: k8s.Provider)
         { provider, dependsOn: [pvc] }
     );
 
-    // ClusterIP Service for GUI (Tailscale access) with static IP
+    // ClusterIP Service for GUI (NetBird access) with static IP
     const service = new k8s.core.v1.Service(
         "syncthing",
         {

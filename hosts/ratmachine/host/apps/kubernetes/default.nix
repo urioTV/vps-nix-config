@@ -70,8 +70,7 @@
     trustedInterfaces = [
       "cali+"
       "tunl0"
-      "tailscale0"
-    ]; # Trust Calico and Tailscale; NetBird adds wt0 in its own module.
+    ]; # Trust Calico; NetBird adds wt0 in its own module.
 
     allowedTCPPorts = [
       # 179 # BGP (Calico) - critical for routing
@@ -86,8 +85,8 @@
     ];
   };
 
-  # Keep pod DNS independent from Tailscale's MagicDNS resolver. CoreDNS
-  # forwards to the kubelet resolv.conf and cannot reach MagicDNS from a pod.
+  # Keep pod DNS independent of the host resolver setup (NetBird DNS is not
+  # reachable from pods). CoreDNS forwards to the kubelet resolv.conf.
   environment.etc."k3s-resolv.conf".text = ''
     nameserver 1.1.1.1
     nameserver 8.8.8.8
@@ -98,6 +97,6 @@
     "8.8.8.8"
   ];
 
-  # Port 6443 doesn't need to be opened globally. The Tailscale and NetBird
-  # interfaces are trusted by their respective modules.
+  # Port 6443 doesn't need to be opened globally. The NetBird interface (wt0)
+  # is a trusted interface, so Kube API is reachable over the overlay.
 }

@@ -41,6 +41,13 @@
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/0.6.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Harmonia Nix binary cache server. Flake input (not nixpkgs) to always get
+    # the latest upstream version, including the newest module options.
+    harmonia = {
+      url = "github:nix-community/harmonia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

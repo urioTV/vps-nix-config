@@ -19,6 +19,7 @@ in
     system = "x86_64-linux";
     modules = commonModules ++ [
       inputs.sops-nix.nixosModules.sops
+      inputs.harmonia.nixosModules.harmonia
       (homeManagerModule "ratmachine")
       ../hosts/ratmachine/configuration.nix
       ../hosts/ratmachine/hardware-configuration.nix
