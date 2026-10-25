@@ -20,7 +20,7 @@ export function deployCertManager(config: CertManagerConfig, provider: k8s.Provi
             name: "cert-manager",
             namespace: ns,
             chart: "cert-manager",
-            version: "v1.21.2",
+            version: "v1.21.3",
             repositoryOpts: {
                 repo: "https://charts.jetstack.io",
             },
