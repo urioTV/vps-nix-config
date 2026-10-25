@@ -1,7 +1,8 @@
 { inputs }:
 let
+  # Determinate is NOT shared anymore: ratmachine runs Lix, so it is listed
+  # explicitly only on the hosts that still use it (konrad-think).
   commonModules = [
-    inputs.determinate.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     ../nix-settings.nix
@@ -42,6 +43,7 @@ in
   konrad-think = {
     system = "x86_64-linux";
     modules = commonModules ++ [
+      inputs.determinate.nixosModules.default
       (homeManagerModule "konrad-think")
       ../hosts/konrad-think/configuration.nix
       ../hosts/konrad-think/hardware-configuration.nix
