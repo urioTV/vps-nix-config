@@ -33,7 +33,9 @@
     enable = true;
     automatic = true;
     deleteOlderThan = "30d";
-    ensureFree = "15G";
+    # 40G free headroom on a 188G disk: below this, GC keeps deleting from the
+    # oldest paths instead of stopping, so the store cannot fill the disk.
+    ensureFree = "40G";
     keepRecent = "1d";
   };
 
