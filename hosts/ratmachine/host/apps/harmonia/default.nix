@@ -16,8 +16,8 @@
   services.harmonia-dev.cache.settings = {
     # 2 workers are plenty for a single-user VPS cache.
     workers = 2;
-    # Serve below cache.nixos.org in priority so the official cache is preferred.
-    priority = 50;
+    # Prefer this cache over cache.nixos.org.
+    priority = 30;
   };
 
   # Reachability: the port is deliberately NOT in networking.firewall
