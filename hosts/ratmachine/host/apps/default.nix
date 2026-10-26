@@ -7,5 +7,6 @@
     ./github-runner
     ./netbird
     ./harmonia
+    ./vintagestory
   ];
 }

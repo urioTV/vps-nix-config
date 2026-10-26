@@ -132,6 +132,13 @@ pulumi up
 
 Pulumi manages namespaces, Helm charts, workloads, Cloudflare tunnels and Zero Trust policies. NixOS and Colmena manage the host and K3s service itself.
 
+## Vintage Story
+
+Vintage Story runs natively on ratmachine through a pinned NixOS module, with data under
+`/var/lib/vintagestory` and the `vintagestory-admin` console. The game port is public;
+administration stays local or over the existing private SSH/NetBird access.
+See [deployment, daily operations and backup requirements](docs/vintage-story.md).
+
 ## Secrets
 
 Edit encrypted values with:

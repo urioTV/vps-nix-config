@@ -48,6 +48,11 @@
       url = "github:nix-community/harmonia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vintagestory-nix = {
+      url = "git+https://codeberg.org/PierreBorine/vintagestory-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

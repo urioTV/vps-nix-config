@@ -473,7 +473,8 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_3",
         "nixvirt": "nixvirt",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "vintagestory-nix": "vintagestory-nix"
       }
     },
     "sops-nix": {
@@ -525,6 +526,26 @@
         "owner": "nix-systems",
         "repo": "triplet",
         "type": "github"
+      }
+    },
+    "vintagestory-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792146607,
+        "narHash": "sha256-3KEB/yZKGkqBU7BtzrTq7kMWzp16NHI0bItZZdDbAMI=",
+        "ref": "refs/heads/master",
+        "rev": "5353839b03bd8aaa18d0fc1e3e04c7f8dd5bf1f0",
+        "revCount": 164,
+        "type": "git",
+        "url": "https://codeberg.org/PierreBorine/vintagestory-nix"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/PierreBorine/vintagestory-nix"
       }
     }
   },

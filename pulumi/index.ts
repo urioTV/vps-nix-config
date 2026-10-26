@@ -3,7 +3,7 @@ import * as cloudflare from "@pulumi/cloudflare";
 import * as k8s from "@pulumi/kubernetes";
 import { loadSecrets } from "./lib/sops";
 import { deployIvy135Baseline } from "./hosts/ivy135";
-import { createTunnel, createAiostreamsZeroTrust } from "./cloudflare";
+import { createTunnel, createAiostreamsZeroTrust, createVintageStoryDns } from "./cloudflare";
 import { configureTraefik } from "./kubernetes/traefik";
 import { createNamespaces, deployEngram, deployAiometadata, deployAiostreams, deployJackett, deployByparr, deployCalico, deploySyncthing, deploySyncthingRelay, deployCertManager, deploySyncthingDiscovery } from "./kubernetes";
 
@@ -48,6 +48,14 @@ const tunnel = createTunnel({
         dnsRecordName: "engram",
         serviceUrl: "http://engram-cloud.engram:18080",
     }],
+    provider: cloudflareProvider,
+});
+
+// DNS-only record so players can reach the game at vintage.urio.dev:42420.
+createVintageStoryDns({
+    zoneId: secrets.cloudflare_zone_id,
+    recordName: "vintage",
+    serverAddress: secrets["ratmachine-ip"],
     provider: cloudflareProvider,
 });
 
@@ -153,6 +161,7 @@ const ivy135 = deployIvy135Baseline();
 // Exports
 // ============================================================================
 
+export const vintageStoryAddress = "vintage.urio.dev:42420";
 export const tunnelId = tunnel.tunnelId;
 export const tunnelToken = pulumi.secret(tunnel.tunnelToken);
 export const aiostreamsUrl = `https://${secrets.aiostreams_domain}`;
