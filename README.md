@@ -132,6 +132,48 @@ pulumi up
 
 Pulumi manages namespaces, Helm charts, workloads, Cloudflare tunnels and Zero Trust policies. NixOS and Colmena manage the host and K3s service itself.
 
+## mikr.us ivy135
+
+Pulumi runs `ansible/playbooks/netbird.yml` over SSH to install NetBird and enroll
+an unregistered peer using `netbird-authkey` from `secrets/secrets.yaml`. The
+controller decrypts the key only when the daemon reports `NeedsLogin`; it is not
+passed through Pulumi state. The key must be valid and usable for a new peer;
+rotate it with `secrets-edit` if it is expired, revoked or exhausted. Ansible
+suppresses the enrollment task's output, but the key is temporarily present in
+the remote command environment and is accessible to privileged processes.
+
+The default SSH address is `ivy135.netbird.cloud`. For a fresh host, first ensure
+SSH and a suitable authorized key work via an independent address, then set that
+address with `pulumi config set ivy135:sshHost <ssh-address> --stack urioTV/vps-ovh`.
+After enrollment, remove the override with `pulumi config rm ivy135:sshHost
+--stack urioTV/vps-ovh` and preview before applying. An SSH connection through
+NetBird itself cannot bootstrap a host that has not yet joined the network.
+Check mode reports enrollment without attempting it; actual enrollment requires
+an apply.
+
+Pulumi also runs `ansible/playbooks/hermes.yml` to bootstrap a Hermes workstation
+on ivy135. The `hermes` account has passwordless sudo and Docker access, both
+of which grant host-level control. Only trusted operators should be allowed to
+interact with the agent; untrusted content can influence its actions. Docker
+inside the mikr.us LXC depends on host nesting and kernel permissions. Browser
+and containers can exhaust the 2 GiB RAM (there is no swap).
+
+The initial source installer and commit are pinned and checksum-verified. After
+bootstrap, Hermes owns its runtime and may use `hermes update`; Ansible does not
+pin subsequent updates or overwrite `/home/hermes/.hermes` (config, credentials,
+memories, skills, jobs and sessions). Packages installed by the agent are not
+part of the declarative baseline. Back up that directory securely, including its
+credentials, and test restores. Updates or configuration changes may require a
+gateway restart.
+
+Configure a model and credentials as the service user with `sudo -iu hermes` and
+`~/.local/bin/hermes setup` or `~/.local/bin/hermes model`. No provider or
+messaging gateway is configured automatically. If enabling a gateway, configure
+only trusted users with its allowlist or pairing before starting it, and follow
+the upstream service setup; do not expose an unauthenticated public endpoint.
+See https://hermes-agent.nousresearch.com/docs/user-guide/security and
+https://hermes-agent.nousresearch.com/docs/user-guide/messaging/.
+
 ## Vintage Story
 
 Vintage Story runs natively on ratmachine through a pinned NixOS module, with data under

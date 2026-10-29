@@ -8,6 +8,8 @@ import * as ansible from "@pulumi/ansible";
 //   pulumi config set ivy135:checkMode true --stack urioTV/vps-ovh
 const config = new pulumi.Config("ivy135");
 const checkMode = config.getBoolean("checkMode") ?? false;
+// Use a reachable SSH address for initial provisioning before NetBird is joined.
+const sshHost = config.get("sshHost") ?? "ivy135.netbird.cloud";
 
 const playbookFile = path.resolve(__dirname, "../../ansible/playbooks/netbird.yml");
 const playbookSha256 = crypto.createHash("sha256").update(fs.readFileSync(playbookFile)).digest("hex");
@@ -24,14 +26,14 @@ const playbookSha256 = crypto.createHash("sha256").update(fs.readFileSync(playbo
  * A replacement also replays the playbook, which is idempotent.
  */
 export function deployIvy135Baseline() {
-    return new ansible.Playbook("ivy135-netbird", {
+    const netbird = new ansible.Playbook("ivy135-netbird", {
         name: "ivy135",
         playbook: "../ansible/playbooks/netbird.yml",
         replayable: true,
         checkMode,
         diffMode: checkMode,
         extraVars: {
-            ansible_host: "ivy135.netbird.cloud",
+            ansible_host: sshHost,
             ansible_user: "root",
             // Content hash: editing the playbook changes this value and replaces the resource.
             playbook_sha256: playbookSha256,
@@ -39,4 +41,19 @@ export function deployIvy135Baseline() {
     }, {
         replaceOnChanges: ["extraVars", "checkMode", "diffMode"],
     });
+
+    const hermesFile = path.resolve(__dirname, "../../ansible/playbooks/hermes.yml");
+    const hermesSha256 = crypto.createHash("sha256").update(fs.readFileSync(hermesFile)).digest("hex");
+    const hermes = new ansible.Playbook("ivy135-hermes", {
+        name: "ivy135",
+        playbook: "../ansible/playbooks/hermes.yml",
+        replayable: true,
+        checkMode,
+        diffMode: checkMode,
+        extraVars: { ansible_host: sshHost, ansible_user: "root", playbook_sha256: hermesSha256 },
+    }, {
+        dependsOn: [netbird],
+        replaceOnChanges: ["extraVars", "checkMode", "diffMode"],
+    });
+    return { netbird, hermes };
 }

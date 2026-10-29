@@ -1,0 +1,114 @@
+---
+# Bootstrap only: the service user's runtime, configuration and updates are mutable.
+- name: Hermes agent workstation baseline
+  hosts: all
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    hermes_commit: bf0203a794a07aac3ff764972ab9087baa4e4f4e
+    hermes_installer_sha256: 99cb3691d55019c6973a7acb775a915648666cc24e483ca827a1cdbb3531a674
+  tasks:
+    - name: Install workstation, Docker and Chromium runtime dependencies
+      ansible.builtin.apt:
+        name:
+          - sudo
+          - git
+          - curl
+          - ca-certificates
+          - tar
+          - xz-utils
+          - unzip
+          - build-essential
+          - pkg-config
+          - jq
+          - ripgrep
+          - openssh-client
+          - docker.io
+          - docker-compose-v2
+          - libatomic1
+          - libnss3
+          - libnspr4
+          - libatk1.0-0t64
+          - libatk-bridge2.0-0t64
+          - libcups2t64
+          - libdrm2
+          - libxkbcommon0
+          - libxcomposite1
+          - libxdamage1
+          - libxfixes3
+          - libxrandr2
+          - libgbm1
+          - libasound2t64
+          - libpango-1.0-0
+          - libcairo2
+          - libatspi2.0-0t64
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Create Hermes user
+      ansible.builtin.user:
+        name: hermes
+        shell: /bin/bash
+        create_home: true
+        groups: docker
+        append: true
+
+    - name: Allow Hermes to administer the host
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/hermes
+        content: "hermes ALL=(ALL:ALL) NOPASSWD: ALL\n"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: /usr/sbin/visudo -cf %s
+
+    - name: Enable Docker
+      ansible.builtin.systemd:
+        name: docker
+        enabled: true
+        state: started
+      when: not ansible_check_mode
+
+    - name: Check for completed initial bootstrap
+      ansible.builtin.stat:
+        path: /var/lib/hermes-bootstrap/complete
+      register: hermes_bootstrap
+
+    - name: Download verified initial installer
+      ansible.builtin.get_url:
+        url: "https://raw.githubusercontent.com/NousResearch/hermes-agent/{{ hermes_commit }}/scripts/install.sh"
+        dest: /usr/local/src/hermes-install-{{ hermes_commit }}.sh
+        checksum: "sha256:{{ hermes_installer_sha256 }}"
+        mode: '0644'
+      when: not hermes_bootstrap.stat.exists and not ansible_check_mode
+
+    - name: Bootstrap Hermes as its own user (subsequent updates belong to Hermes)
+      ansible.builtin.command:
+        argv:
+          - bash
+          - /usr/local/src/hermes-install-{{ hermes_commit }}.sh
+          - --non-interactive
+          - --commit
+          - "{{ hermes_commit }}"
+      become_user: hermes
+      environment:
+        HOME: /home/hermes
+        HERMES_HOME: /home/hermes/.hermes
+      when: not hermes_bootstrap.stat.exists and not ansible_check_mode
+
+    - name: Create bootstrap state directory
+      ansible.builtin.file:
+        path: /var/lib/hermes-bootstrap
+        state: directory
+        mode: '0755'
+      when: not ansible_check_mode
+
+    - name: Record successful bootstrap
+      ansible.builtin.copy:
+        dest: /var/lib/hermes-bootstrap/complete
+        content: "Initial Hermes bootstrap completed.\n"
+        owner: root
+        group: root
+        mode: '0644'
+      when: not ansible_check_mode

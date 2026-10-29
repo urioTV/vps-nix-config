@@ -6,8 +6,8 @@
 # Every task converges the host to the declared state and reports "ok" when
 # nothing has to change, so the playbook is safe to replay on each `pulumi up`.
 #
-# Joining the network is intentionally NOT done here: a connected peer needs no
-# setup key, and the key handling is still an open decision.
+# The setup key is decrypted on the controller only when the daemon needs login.
+# The target must already be reachable over SSH, independently of NetBird on first boot.
 
 - name: NetBird client baseline
   hosts: all
@@ -76,14 +76,38 @@
         state: started
 
     - name: Read NetBird connection status
-      ansible.builtin.command: netbird status
+      ansible.builtin.command: netbird status --json
       register: netbird_status
       changed_when: false
-      # Read-only query: run it in check mode too, or the assertion sees no output.
       check_mode: false
 
-    - name: Fail when the peer is not connected to the management service
+    - name: Enroll the peer when login is required
+      ansible.builtin.command: netbird up
+      environment:
+        NB_SETUP_KEY: "{{ lookup('ansible.builtin.pipe', 'sops --decrypt --extract ' ~ (\"[\\\"netbird-authkey\\\"]\" | quote) ~ ' ' ~ ((playbook_dir ~ '/../../secrets/secrets.yaml') | quote)) }}"
+      when:
+        - (netbird_status.stdout | from_json).daemonStatus == 'NeedsLogin'
+        - not ansible_check_mode
+      no_log: true
+
+    - name: Read connection status after enrollment
+      ansible.builtin.command: netbird status --json
+      register: netbird_final_status
+      changed_when: false
+      check_mode: false
+      when: not ansible_check_mode
+
+    - name: Verify the peer is connected to the management service
       ansible.builtin.assert:
         that:
-          - "'Management: Connected' in netbird_status.stdout"
-        fail_msg: "NetBird is installed but not connected; join it manually or with a setup key"
+          - (netbird_final_status.stdout | from_json).management.connected
+        fail_msg: "NetBird is not connected; check the setup key and network connectivity"
+      when: not ansible_check_mode
+
+    - name: Report enrollment required in check mode
+      ansible.builtin.debug:
+        msg: "NetBird needs enrollment; it will be performed outside check mode."
+      when:
+        - ansible_check_mode
+        - (netbird_status.stdout | from_json).daemonStatus == 'NeedsLogin'
+      changed_when: true
