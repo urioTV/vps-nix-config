@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   # Ephemeral self-hosted runner for urioTV/urio-nur (public repository).
   #
@@ -24,6 +24,12 @@
   # The runner executes workflow code from main, so it gets a restricted sandbox.
   # ProtectSystem=strict is left out: nix and the cachix steps need writable paths.
   systemd.services.github-runner-urio-nur.serviceConfig = {
+    # The module restarts an ephemeral runner only after a clean exit. A job cancelled
+    # while it starts can leave a stale session on GitHub; the next listener then
+    # loses its registration, exits 1 and the runner stayed down for good. Every
+    # start re-registers (replace = true), so restarting after a failure heals it.
+    Restart = lib.mkForce "always";
+    RestartSec = "30s";
     NoNewPrivileges = true;
     PrivateTmp = true;
     ProtectHome = true;
