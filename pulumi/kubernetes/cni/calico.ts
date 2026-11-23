@@ -14,7 +14,7 @@ export function deployCalico(provider: k8s.Provider) {
         "tigera-operator",
         {
             chart: "tigera-operator",
-            version: "v3.33.0", // Kubernetes 1.36 is covered by Calico 3.33 (built against 1.35/1.36/1.37 libs)
+            version: "v3.33.1", // Calico 3.33 supports Kubernetes 1.36.
             repositoryOpts: {
                 repo: "https://docs.tigera.io/calico/charts",
             },

@@ -1,5 +1,9 @@
 # Vintage Story server on ratmachine
 
+## Paused state
+
+Vintage Story is temporarily disabled in `hosts/ratmachine/host/apps/vintagestory/default.nix` (`services.vintagestory.enable = false`). This removes the automatic startup and firewall opening without deleting `/var/lib/vintagestory`. To resume, set `enable = true` and deploy the ratmachine configuration.
+
 ## Architecture
 
 `ratmachine` runs one native NixOS Vintage Story dedicated server using the [PierreBorine/vintagestory-nix](https://codeberg.org/PierreBorine/vintagestory-nix) flake module. Its flake input follows this repository's `nixpkgs`; `flake.lock` pins the source revision. The ratmachine-only app module adds the upstream overlay and selects the explicitly pinned **1.22.7** package (`v1-22-7` in the selected flake's package set). The existing flake pin already contains this version, so no unrelated dependency update is needed. The package is proprietary/unfree; the narrow NixOS allowlist applies only to the Vintage Story package. The selected package currently evaluates with the nixpkgs-provided .NET runtime and requires no insecure-package exception.
@@ -118,7 +122,7 @@ ssh -F "$SSH_CONFIG_FILE" ratmachine 'sudo journalctl -u vintagestory.service -n
 
 Verify TCP and UDP reachability on port 42420 from an external network and verify no administrative endpoint is reachable publicly. Also test `sudo systemctl stop vintagestory.service`, ensure both units become inactive, and confirm the server remains stopped until explicitly started. Do not open the admin console while stopped: its FIFO writer may wait for a listener; cancel it with Ctrl-C rather than starting another process. Check that shutdown completes within 180 seconds and that save files persist.
 
-Local evaluation/build is not a substitute for a live test of game login, saving, public firewall rules or mod compatibility. System activation is performed by the operator, not automatically by the assistant.
+Local evaluation/build is not a substitute for a live test of game login, saving, public firewall rules or mod compatibility.
 
 ## Backups
 

@@ -2,6 +2,7 @@
 {
   services.k3s = {
     enable = true;
+    package = pkgs.k3s_1_37;
     role = "server";
     extraFlags = toString [
       # "--disable=traefik" # Disable built-in traefik (optional)
@@ -40,7 +41,7 @@
   environment.systemPackages = with pkgs; [
     kubectl
     kubernetes-helm
-    k3s
+    config.services.k3s.package
     openiscsi
     nfs-utils
     util-linux
