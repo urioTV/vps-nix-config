@@ -33,9 +33,12 @@
     enable = true;
     automatic = true;
     deleteOlderThan = "30d";
-    # 40G free headroom on a 188G disk: below this, GC keeps deleting from the
-    # oldest paths instead of stopping, so the store cannot fill the disk.
-    ensureFree = "40G";
+    # 60G free headroom on a 188G disk: below this, GC keeps deleting from the
+    # oldest paths instead of stopping, so the store cannot fill the disk. It must
+    # stay well above the 40 GiB the urio-nur kernel workflow requires before a
+    # build (.github/workflows/kernel.yml): with both at 40G, one day of builds
+    # left 39 GiB and the CachyOS kernel build refused to start.
+    ensureFree = "60G";
     keepRecent = "1d";
   };
 

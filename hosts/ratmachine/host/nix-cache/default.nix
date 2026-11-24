@@ -32,7 +32,7 @@ in
     # Daemon-triggered auto-GC: when free space drops below min-free (e.g. while
     # a remote build is running), the daemon collects garbage until max-free is
     # available. Without this, a full disk fails the build instead of cleaning
-    # up first. Bounds are well below harmonia-gc's ensureFree (40G), which
+    # up first. Bounds are well below harmonia-gc's ensureFree (60G), which
     # handles the scheduled nightly pass. Lix does not accept size suffixes
     # here, so plain byte values are used (20G / 45G).
     min-free = 21474836480;
